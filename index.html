@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sytnax Lab</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <link rel="stylesheet" href="style.css">
+    <!-- Fütüristik ve Yazılımcı fontları -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="logo">Sytnax Lab</a>
+            
+            <ul id="nav-links">
+                <li><a href="#" class="nav-link" data-target="anasayfa">Ana Sayfa</a></li>
+                <li><a href="#" class="nav-link" data-target="projeler">Projeler</a></li>
+                <li><a href="#" class="nav-link" data-target="kodlar">Kodlar</a></li>
+            </ul>
+
+            <div id="hamburger-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="anasayfa" class="sayfa aktif">
+             <div class="hero">
+                <h1>YAZILIMIN GELECEĞİNE HOŞ GELDİN</h1>
+                <p>
+                    Ben Mehmet Karadaş, hedefim bir yazılım mühendisi olmak; bu doğrultuda çok fazla ve güzel kodlar yazmaya ve devreler kurmaya çalışacağım bu internet sitemde basitçe kendi devrelerimi ve kodlarımı paylaştım.
+                    Eğer ki detaylı yapılışlarını istiyorsan 
+                    <a href="https://www.youtube.com/@Robotech4401" target="_blank" class="hero-link">Youtube</a>'dan izleyebilir, 
+                    <a href="https://www.instagram.com/robotech404_/" target="_blank" class="hero-link">Instagram</a> hesabından bana ulaşabilir ve soru sorabilirsiniz🙂
+                </p>
+            </div>
+             <div class="iletisim">
+                <h3>BAĞLANTI KUR</h3>
+                <p><span>YouTube:</span> <a href="https://www.youtube.com/@Robotech4401" target="_blank">Robotech4401</a></p>
+                <p><span>Instagram:</span> <a href="https://www.instagram.com/robotech404_/" target="_blank">robotech404_</a></p>
+            </div>
+        </section>
+        <section id="projeler" class="sayfa">
+            <h1>PROJELER</h1>
+            <div id="projeler-listesi" class="grid-container"></div>
+        </section>
+        <section id="kodlar" class="sayfa">
+            <h1>KOD ARŞİVİ</h1>
+            <div id="kodlar-listesi"></div>
+        </section>
+    </main>
+    
+    <!-- Proje Detayları için Modal -->
+    <div id="proje-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div id="modal-images"></div>
+            <h3>GEREKLİ MALZEMELER</h3>
+            <ul id="modal-materials"></ul>
+            <h3>KODLAR</h3>
+            <div id="modal-codes"></div>
+        </div>
+    </div>
+
+    <!-- YENİ EKLENDİ: Kod Demoları için Modal -->
+    <div id="demo-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="demo-modal-title"></h2>
+            <p class="demo-disclaimer">
+                <strong>Bilgilendirme:</strong> Bu demo, orijinal Python kodunun mantığını ve çalışmasını tarayıcınızda deneyimleyebilmeniz için <strong>JavaScript ile yeniden oluşturulmuştur.</strong>
+            </p>
+            <div id="demo-modal-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

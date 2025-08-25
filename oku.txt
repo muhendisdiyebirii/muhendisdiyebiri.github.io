@@ -1,0 +1,68 @@
+knk senden bir hesap isteyeceğim ve o hesap ile sana erişim açacağım firebase deki proje için kullanacağın genel komutlar
+
+
+[KODLAR]
+
+npm install -g firebase-tools
+
+Ne İşe Yarar? Bu komut, Firebase komutlarını bilgisayarının her yerinden kullanabilmen için gerekli olan "Firebase Tools" paketini bilgisayarına global olarak kurar. Bu işlemi sadece bir kere yapman yeterlidir.
+
+firebase login
+
+Ne İşe Yarar? Firebase hesabına giriş yapmanı sağlar. Komutu çalıştırdığında bir tarayıcı penceresi açılır ve Google hesabınla giriş yapman istenir. Projelerini yönetebilmek için önce giriş yapmalısın.
+
+firebase logout
+
+Ne İşe Yarar? Aktif Firebase hesabından çıkış yapar.
+
+Proje Başlatma ve Kurulum Komutları
+
+firebase init
+
+Ne İşe Yarar? Bu, en önemli başlangıç komutlarından biridir. Proje klasörünün içinde çalıştırıldığında, bu klasörü bir Firebase projesine bağlamak için bir kurulum sihirbazı başlatır. Sana hangi Firebase hizmetlerini (Hosting, Functions, Firestore vb.) kullanmak istediğini sorar ve gerekli yapılandırma dosyalarını (firebase.json, .firebaserc) oluşturur.
+
+firebase init hosting
+
+Ne İşe Yarar? Sadece Firebase Hosting hizmetini kurmak için kullanılır. firebase init komutunun daha spesifik bir halidir.
+
+Geliştirme ve Test Etme Komutları
+
+firebase serve
+
+Ne İşe Yarar? Projeni internete yüklemeden (deploy etmeden) önce bilgisayarında yerel olarak test etmeni sağlar. Bu komutu çalıştırdığında, siten http://localhost:5000 gibi bir adreste çalışır. Yaptığın değişiklikleri canlı olarak görmek için harikadır ve deploy etmeden önce her şeyin yolunda olduğundan emin olmanı sağlar.
+
+firebase serve --only hosting
+
+Ne İşe Yarar? Sadece Hosting içeriğini yerel sunucuda çalıştırır. Projende Functions gibi başka servisler varsa onları çalıştırmaz, bu da daha hızlı bir başlangıç sağlar.
+
+Projeyi Yayınlama (Deployment) Komutları
+
+firebase deploy
+
+Ne İşe Yarar? Yerel klasöründeki projenin son halini canlıya, yani internetteki Firebase sunucularına yükler. Sitenin güncellenmesini sağlayan ana komut budur. Değişiklik yaptıktan sonra bu komutu çalıştırdığında siten güncellenir.
+
+firebase deploy --only hosting
+
+Ne İşe Yarar? Projendeki birden fazla Firebase hizmetinden (Functions, Firestore kuralları vb.) sadece Hosting ile ilgili dosyaları canlıya yükler. Bu, sadece web sitenin dosyalarını güncellediğinde daha hızlı bir yükleme süreci sağlar. En sık kullanacağın komutlardan biri budur.
+
+firebase deploy --only functions
+
+Ne İşe Yarar? Sadece sunucu taraflı çalışan Cloud Functions kodlarını günceller.
+
+Proje Yönetimi Komutları
+
+firebase projects:list
+
+Ne İşe Yarar? Giriş yaptığın Firebase hesabına ait tüm projelerin bir listesini gösterir. Hangi projelere erişimin olduğunu görmek için kullanışlıdır.
+
+firebase use <proje_id>
+
+Ne İşe Yarar? Eğer birden fazla Firebase projesiyle çalışıyorsan, bu komut aktif olarak hangi proje üzerinde işlem yapacağını belirlemeni sağlar. Örneğin, firebase use robotech-404 komutu, yapacağın tüm deploy işlemlerinin "robotech-404" projesine gönderileceğini garanti eder.
+
+firebase open hosting:site
+
+Ne İşe Yarar? Aktif projenin canlıdaki web sitesini varsayılan tarayıcında açar. Sitenin URL'sini hatırlamak zorunda kalmazsın.
+
+firebase --help
+
+Ne İşe Yarar? Tüm Firebase komutlarının bir listesini ve açıklamalarını gösterir. Bir komutu unuttuğunda veya ne işe yaradığını merak ettiğinde kullanabilirsin.
