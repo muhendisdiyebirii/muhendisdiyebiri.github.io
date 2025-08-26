@@ -109,6 +109,17 @@
       "tip": "indir",
       "aciklama": "İnteraktif ve eğlenceli bir şekilde hazırlanmış bir web sayfası projesi.",
       "dosyaYolu": "downloads/kıza-açılma.html"
-    }
+    },
+    {
+  "id": "python-sifre-olusturucu",
+  "baslik": "Rastgele Şifre Oluşturucu",
+  "dil": "Python",
+  "tip": "goster",
+  "demo": true,
+  "aciklama": "Belirttiğiniz uzunlukta güçlü ve rastgele şifreler oluşturan bir script.",
+  "kod": "import random\nimport string\n\n# Kullanıcıdan şifre uzunluğunu alma\nuzunluk = int(input(\"Şifrenizin Olmasını İstediğiniz Uzunluğu Giriniz:\"))\n\ndef sifre():\n    # Şifre elemanlarını belirle: büyük/küçük harf, rakam ve özel karakterler\n    eleman = string.ascii_letters + string.digits + \"!#+%&_\"\n    # Random olarak şifre oluştur\n    şifre = ''.join(random.choice(eleman) for i in range(uzunluk))\n    # Oluşturulan şifreyi ekrana yazdır\n    print(\"Şifreniz: \" + şifre)\n\n# Fonksiyonu çağır\nsifre()"
+}
+
   ]
+
 }
