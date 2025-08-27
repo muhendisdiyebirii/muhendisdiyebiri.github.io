@@ -134,13 +134,39 @@
   "tip": "goster",
   "aciklama": "Kullanıcı checkbox işaretlediğinde sitenin temasını aydınlık ve karanlık mod arasında geçiş yapan basit bir örnek.",
   "kod": "<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  body {\n    font-family: Arial, sans-serif;\n    transition: background 0.5s, color 0.5s;\n    background: #f0f0f0;\n    color: #333;\n    text-align: center;\n    padding-top: 50px;\n  }\n  body.dark {\n    background: #222;\n    color: white;\n  }\n  label {\n    cursor: pointer;\n    font-size: 18px;\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n  }\n  input[type=\"checkbox\"] {\n    width: 20px;\n    height: 20px;\n    accent-color: #4cafef;\n    transform: scale(1.2);\n    transition: transform 0.2s ease;\n  }\n  input[type=\"checkbox\"]:hover {\n    transform: scale(1.4);\n  }\n</style>\n</head>\n<body>\n  <label>\n    <input type=\"checkbox\" id=\"themeCheckbox\">\n    Karanlık Mod\n  </label>\n\n<script>\n  const checkbox = document.getElementById(\"themeCheckbox\");\n  checkbox.addEventListener(\"change\", () => {\n    document.body.classList.toggle(\"dark\", checkbox.checked);\n  });\n</script>\n</body>\n</html>"
-    }
-
-
+    },
+    {
+  "id": "python-sifreli-liste-yoneticisi",
+  "baslik": "Şifreli Liste Yöneticisi",
+  "dil": "Python",
+  "tip": "goster",
+  "demo": true,
+  "aciklama": "Kullanıcının belirlediği şifre ile listeye eleman ekleme, çıkarma ve görüntüleme işlemleri yapılabilen basit bir yönetim sistemi.",
+  "kod": "sifre = int(input(\"Bir Şifre Belirleyiniz:\"))\n\ndef islem():\n    print(\"İşlem Başarılı!\")\n\ndef sifre_kontrol():\n    giris = int(input(\"Şifreyi Giriniz: \"))\n    if giris == sifre:\n        return True\n    else:\n        print(\"Hatalı Şifre!\")\n        return False\n\nliste = []  \n\nwhile True:\n    secim = input(\"1.Listeye Ekle\\n2.Listeden Çıkar\\n3.Listeyi Göster\\n4.Kapat\\nSeçiminizi Yapınız:\")\n\n    if secim == \"1\":\n        if sifre_kontrol():  \n            ekle = input(\"Eklemek İstediğin Aktiviteyi Giriniz: \")\n            liste.append(ekle)\n            print(ekle + \" eklendi\")\n            islem()\n\n    elif secim == \"2\":\n        if sifre_kontrol():\n            print(liste)\n            cikar = input(\"Listeden Çıkartmak İstediğiniz Aktiviteyi Giriniz: \")\n            if cikar in liste:\n                liste.remove(cikar)\n                islem()\n            else:\n                print(\"Bu aktivite listede yok!\")\n\n    elif secim == \"3\":\n        if sifre_kontrol():\n            print(liste)\n\n    elif secim == \"4\":\n        print(\"Program Kapatılıyor...\")\n        break"
+    },
+    {
+  "id": "python-gelistirilmis-hesap-makinesi",
+  "baslik": "Hesap Makinesi",
+  "dil": "Python",
+  "tip": "goster",
+  "demo": true,
+  "aciklama": "Toplama, çıkarma, çarpma, bölme, üs alma, faktöriyel ve karekök işlemlerini yapabilen gelişmiş bir hesap makinesi.",
+  "kod": "import math\n\ndef sayi():\n    return float(input(\"İlk Sayıyı Giriniz:\"))\n\ndef sayi2():\n    return float(input(\"İkinci Sayıyı Giriniz:\"))\n\nwhile True:\n\n    secim = input(\"1.Toplama İşlemi\\n2.Çıkarma İşlemi\\n3.Çarpma İşlemi\\n4.Bölme İşlemi\\n5.Üs Alma\\n6.Faktöriyel Alma\\n7.Karekök Alma\\n8.Kapat\\nLütfen Yapmak İstediğiniz İşlemin Numarasını Giriniz:\")\n\n    if secim == \"1\":\n        t1 = sayi()\n        t2 = sayi2()\n        print(t1 + t2)\n    if secim == \"2\":\n        ç1 = sayi()\n        ç2 = sayi2()\n        print(ç1 - ç2)\n    if secim == \"3\":\n        ça1 = sayi()\n        ça2 = sayi2()\n        print(ça1 * ça2)\n    if secim == \"4\":\n        b1 = sayi()\n        b2 = sayi2()\n        print(b1 / b2)\n    if secim == \"5\":\n        ü1 = sayi()\n        ü2 = sayi2()\n        print(ü1 ** ü2)\n    if secim == \"6\":\n        f = int(input(\"Faktöriyel almak istediğiniz sayıyı giriniz:\"))\n        f = math.factorial(f)\n        print(f)\n    if secim == \"7\":\n        k = float(input(\"Karekökünü Almak İstediğiniz Sayıyı Giriniz:\"))\n        k = math.sqrt(k)\n        print(k)\n    if secim == \"8\":\n        print(\"Program Kapatılıyor...\")\n        break"
+    },
+    {
+  "id": "python-turtle-kalp",
+  "baslik": "Python Trurtle ile Kalp Çizimi",
+  "dil": "Python",
+  "tip": "goster",
+  "demo": true,
+  "aciklama": "Python turtle kütüphanesi ile kırmızı renkte bir kalp şekli çizen bir örnek.",
+  "kod": "from turtle import *\ncolor('red')\nbegin_fill()\npensize(3)\nleft(50)\nforward(133)\ncircle(50, 200)\nright(140)\ncircle(50, 200)\nend_fill()\ndone()"
+    },
 
   ]
 
 }
+
 
 
 
