@@ -132,7 +132,6 @@
   "baslik": "Karanlık Mod Geçişi",
   "dil": "HTML",
   "tip": "goster",
-  "demo": true,
   "aciklama": "Kullanıcı checkbox işaretlediğinde sitenin temasını aydınlık ve karanlık mod arasında geçiş yapan basit bir örnek.",
   "kod": "<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  body {\n    font-family: Arial, sans-serif;\n    transition: background 0.5s, color 0.5s;\n    background: #f0f0f0;\n    color: #333;\n    text-align: center;\n    padding-top: 50px;\n  }\n  body.dark {\n    background: #222;\n    color: white;\n  }\n  label {\n    cursor: pointer;\n    font-size: 18px;\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n  }\n  input[type=\"checkbox\"] {\n    width: 20px;\n    height: 20px;\n    accent-color: #4cafef;\n    transform: scale(1.2);\n    transition: transform 0.2s ease;\n  }\n  input[type=\"checkbox\"]:hover {\n    transform: scale(1.4);\n  }\n</style>\n</head>\n<body>\n  <label>\n    <input type=\"checkbox\" id=\"themeCheckbox\">\n    Karanlık Mod\n  </label>\n\n<script>\n  const checkbox = document.getElementById(\"themeCheckbox\");\n  checkbox.addEventListener(\"change\", () => {\n    document.body.classList.toggle(\"dark\", checkbox.checked);\n  });\n</script>\n</body>\n</html>"
     }
@@ -142,6 +141,7 @@
   ]
 
 }
+
 
 
 
