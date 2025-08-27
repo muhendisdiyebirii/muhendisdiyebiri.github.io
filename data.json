@@ -161,11 +161,12 @@
   "demo": true,
   "aciklama": "Python turtle kütüphanesi ile kırmızı renkte bir kalp şekli çizen bir örnek.",
   "kod": "from turtle import *\ncolor('red')\nbegin_fill()\npensize(3)\nleft(50)\nforward(133)\ncircle(50, 200)\nright(140)\ncircle(50, 200)\nend_fill()\ndone()"
-    },
+    }
 
   ]
 
 }
+
 
 
 
