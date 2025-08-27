@@ -31,17 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     };
-    
+
     // === AKSİYON BUTONLARI İÇİN EVENT LISTENER ===
     document.body.addEventListener('click', function(event) {
-        
+
         // Kodu Göster/Gizle Butonu
         if (event.target.matches('.btn-goster')) {
             const wrapper = event.target.closest('.kod-blogu-wrapper');
             const kodBlok = wrapper.querySelector('.kod-blogu');
             kodBlok.classList.toggle('acik');
-            
-            event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
+
+            if (kodBlok.classList.contains('acik')) {
+                event.target.textContent = 'Kodu Gizle';
+            } else {
+                event.target.textContent = 'Kodu Göster';
+            }
         }
 
         // Kopyala Butonu
@@ -60,7 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
-            if(kodData) demoyuBaslat(kodData);
+            if(kodData) {
+                demoyuBaslat(kodData);
+            }
         }
     });
 
@@ -77,7 +83,8 @@ document.addEventListener('DOMContentLoaded', function() {
             tumVeri.projeler.forEach(proje => {
                 const projeElementi = document.createElement('div');
                 projeElementi.className = 'proje-karti';
-                const kapakResmi = proje.resimler?.[0] || 'images/default.png';
+                projeElementi.dataset.id = proje.id;
+                const kapakResmi = proje.resimler && proje.resimler.length > 0 ? proje.resimler[0] : 'images/default.png';
                 projeElementi.innerHTML = `<img src="${kapakResmi}" alt="${proje.baslik}"><div class="proje-karti-icerik"><h3>${proje.baslik}</h3><p>${proje.aciklama}</p></div>`;
                 projeElementi.addEventListener('click', () => detaylariGoster(proje));
                 projelerListesi.appendChild(projeElementi);
@@ -94,7 +101,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     element.className = 'kod-karti';
                     const guvenliKod = kod.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    let demoButton = kod.demo ? `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>` : '';
+                    
+                    let demoButton = '';
+                    if(kod.demo) {
+                        demoButton = `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>`;
+                    }
+
                     element.innerHTML = `
                         <h3>${kod.baslik}</h3>
                         <p>${kod.aciklama}</p>
@@ -115,8 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) { console.error('Veri Yüklenemedi:', error); }
     }
-    
-    // TIKLANAN PROJENİN DETAYLARINI POP-UP'TA GÖSTER
+
     function detaylariGoster(proje) {
         document.getElementById('modal-title').textContent = proje.baslik;
         
@@ -152,7 +163,6 @@ document.addEventListener('DOMContentLoaded', function() {
         projeModal.style.display = "block";
     }
 
-    // DEMO BAŞLATMA FONKSİYONU
     function demoyuBaslat(kodData) {
         const title = document.getElementById('demo-modal-title');
         const content = document.getElementById('demo-modal-content');
@@ -160,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         content.innerHTML = '';
 
         switch(kodData.id) {
+
             case 'python-sayi-tahmin':
                 let sayi = Math.ceil(Math.random() * 100);
                 content.innerHTML = `
@@ -172,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const tahmin = parseInt(document.getElementById('tahminInput').value);
                     const sonuc = document.getElementById('tahminSonuc');
                     if (tahmin === sayi) {
-                        sonuc.innerHTML = `🎉 Tebrikler, doğru tahmin! Sayı ${sayi} idi. Yeni oyun için pencereyi kapatıp tekrar aç.`;
+                        sonuc.innerHTML = `🎉 Tebrikler, doğru tahmin! Sayı ${sayi} idi.`;
                     } else if (tahmin > sayi) {
                         sonuc.textContent = 'Daha küçük bir sayı gir.';
                     } else {
@@ -180,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 break;
-            
+
             case 'python-tkm':
                 content.innerHTML = `
                     <p>Seçimini yap: Taş mı, Kağıt mı, Makas mı?</p>
