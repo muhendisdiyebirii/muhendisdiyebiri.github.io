@@ -32,20 +32,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    // === AKSİYON BUTONLARI İÇİN EVENT LISTENER ===
+    // === AKSİYON BUTONLARI ===
     document.body.addEventListener('click', function(event) {
 
-        // Kodu Göster/Gizle Butonu
+        // Kodu Göster/Gizle
         if (event.target.matches('.btn-goster')) {
             const wrapper = event.target.closest('.kod-blogu-wrapper');
             const kodBlok = wrapper.querySelector('.kod-blogu');
             kodBlok.classList.toggle('acik');
 
-            if (kodBlok.classList.contains('acik')) {
-                event.target.textContent = 'Kodu Gizle';
-            } else {
-                event.target.textContent = 'Kodu Göster';
-            }
+            event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
         }
 
         // Kopyala Butonu
@@ -54,30 +50,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const kod = wrapper.querySelector('code').innerText;
             navigator.clipboard.writeText(kod).then(() => {
                 event.target.classList.add('kopyalandi');
-                setTimeout(() => {
-                    event.target.classList.remove('kopyalandi');
-                }, 1500);
+                setTimeout(() => event.target.classList.remove('kopyalandi'), 1500);
             });
         }
 
-        // Demoyu Dene Butonu
+        // Demo Başlat
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
-            if(kodData) {
-                demoyuBaslat(kodData);
-            }
+            if(kodData) demoyuBaslat(kodData);
         }
+
     });
 
-    // VERİLERİ YÜKLE VE SAYFAYI OLUŞTUR
+    // === VERİLERİ YÜKLE ===
     let tumVeri = {}; 
     async function verileriYukle() {
         try {
             const response = await fetch('data.json');
             tumVeri = await response.json();
 
-            // Projeler listesini doldur
+            // Projeler
             const projelerListesi = document.getElementById('projeler-listesi');
             projelerListesi.innerHTML = '';
             tumVeri.projeler.forEach(proje => {
@@ -90,23 +83,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 projelerListesi.appendChild(projeElementi);
             });
 
-            // Kodlar listesini doldur
+            // Kodlar
             const kodlarListesi = document.getElementById('kodlar-listesi');
-            kodlarListesi.innerHTML = ''; 
+            kodlarListesi.innerHTML = '';
             tumVeri.kodlar.forEach(kod => {
                 const element = document.createElement('div');
-                if (kod.tip === 'indir') {
+                if(kod.tip === 'indir') {
                     element.className = 'indir-karti';
                     element.innerHTML = `<h3>${kod.baslik}</h3><p>${kod.aciklama}</p><a href="${kod.dosyaYolu}" class="btn" download>İndir</a>`;
                 } else {
                     element.className = 'kod-karti';
                     const guvenliKod = kod.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    
-                    let demoButton = '';
-                    if(kod.demo) {
-                        demoButton = `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>`;
-                    }
-
+                    let demoButton = kod.demo ? `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>` : '';
                     element.innerHTML = `
                         <h3>${kod.baslik}</h3>
                         <p>${kod.aciklama}</p>
@@ -125,12 +113,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 kodlarListesi.appendChild(element);
             });
 
-        } catch (error) { console.error('Veri Yüklenemedi:', error); }
+        } catch (error) {
+            console.error('Veri Yüklenemedi:', error);
+        }
     }
 
+    // === PROJE DETAYLARI ===
     function detaylariGoster(proje) {
         document.getElementById('modal-title').textContent = proje.baslik;
-        
+
         const imagesContainer = document.getElementById('modal-images');
         imagesContainer.innerHTML = '';
         proje.resimler.forEach(resimUrl => {
@@ -163,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
         projeModal.style.display = "block";
     }
 
+    // === DEMO BAŞLAT ===
     function demoyuBaslat(kodData) {
         const title = document.getElementById('demo-modal-title');
         const content = document.getElementById('demo-modal-content');
@@ -182,9 +174,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('tahminButton').addEventListener('click', () => {
                     const tahmin = parseInt(document.getElementById('tahminInput').value);
                     const sonuc = document.getElementById('tahminSonuc');
-                    if (tahmin === sayi) {
+                    if(tahmin === sayi){
                         sonuc.innerHTML = `🎉 Tebrikler, doğru tahmin! Sayı ${sayi} idi.`;
-                    } else if (tahmin > sayi) {
+                    } else if(tahmin > sayi){
                         sonuc.textContent = 'Daha küçük bir sayı gir.';
                     } else {
                         sonuc.textContent = 'Daha büyük bir sayı gir.';
@@ -200,26 +192,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="btn tkm-secim" data-secim="Makas">Makas</button>
                     <p id="tkmSonuc"></p>
                 `;
-                document.querySelectorAll('.tkm-secim').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const oyuncuSecimi = e.target.dataset.secim;
-                        const secenekler = ["Taş", "Kağıt", "Makas"];
-                        const bilgisayarSecimi = secenekler[Math.floor(Math.random() * 3)];
+                document.querySelectorAll('.tkm-secim').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const oyuncu = e.target.dataset.secim;
+                        const secenekler = ["Taş","Kağıt","Makas"];
+                        const bilgisayar = secenekler[Math.floor(Math.random()*3)];
                         const sonuc = document.getElementById('tkmSonuc');
-                        
-                        let sonucText = `Senin seçimin: <strong>${oyuncuSecimi}</strong>, Bilgisayarın seçimi: <strong>${bilgisayarSecimi}</strong>.<br>`;
-                        if (oyuncuSecimi === bilgisayarSecimi) {
-                            sonucText += "Berabere!";
-                        } else if (
-                            (oyuncuSecimi === "Taş" && bilgisayarSecimi === "Makas") ||
-                            (oyuncuSecimi === "Kağıt" && bilgisayarSecimi === "Taş") ||
-                            (oyuncuSecimi === "Makas" && bilgisayarSecimi === "Kağıt")
-                        ) {
-                            sonucText += "Kazandın!";
-                        } else {
-                            sonucText += "Kaybettin!";
-                        }
-                        sonuc.innerHTML = sonucText;
+                        let text = `Senin seçimin: <strong>${oyuncu}</strong>, Bilgisayarın seçimi: <strong>${bilgisayar}</strong>.<br>`;
+                        if(oyuncu === bilgisayar) text += "Berabere!";
+                        else if((oyuncu==="Taş" && bilgisayar==="Makas")||(oyuncu==="Kağıt" && bilgisayar==="Taş")||(oyuncu==="Makas" && bilgisayar==="Kağıt")) text += "Kazandın!";
+                        else text += "Kaybettin!";
+                        sonuc.innerHTML = text;
                     });
                 });
                 break;
@@ -232,15 +215,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p id="sifreSonuc"></p>
                 `;
                 document.getElementById('sifreButton').addEventListener('click', () => {
-                    const uzunluk = parseInt(document.getElementById('sifreUzunluk').value);
-                    const karakterler = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%&*?";
+                    const len = parseInt(document.getElementById('sifreUzunluk').value);
+                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%&*?";
                     let sifre = '';
-                    for (let i = 0; i < uzunluk; i++) {
-                        sifre += karakterler.charAt(Math.floor(Math.random() * karakterler.length));
-                    }
+                    for(let i=0;i<len;i++) sifre += chars.charAt(Math.floor(Math.random()*chars.length));
                     document.getElementById('sifreSonuc').textContent = `Oluşturulan Şifre: ${sifre}`;
                 });
                 break;
+
         }
 
         demoModal.style.display = 'block';
