@@ -124,7 +124,6 @@
   "baslik": "Dosya Uzantısı Değiştirici",
   "dil": "Python",
   "tip": "goster",
-  "demo": true,
   "aciklama": "Kullanıcının belirttiği dosyanın uzantısını kolayca değiştiren bir script.",
   "kod": "import os\n\ndosya = input(\"Dosyanın tam adını giriniz(örnek.txt):\") #----> Dosya Yolumuz\n\nuzantı = input(\"Dosyanın olmasını istediğiniz uzantısını giriniz(.txt,.vbs vs.):\")\n\nyenidosya = os.path.splitext(dosya)[0] + (uzantı)\n\nos.rename(dosya, yenidosya)\n\nprint(f\"{dosya} -> {yenidosya} olarak değiştirildi.\")"
 }
@@ -133,4 +132,5 @@
   ]
 
 }
+
 
