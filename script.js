@@ -1,3 +1,160 @@
+document.addEventListener('DOMContentLoaded', function() {
+
+    // === SAYFA GEÇİŞLERİ ===
+    const navLinkElements = document.querySelectorAll('.nav-link');
+    const sayfalar = document.querySelectorAll('.sayfa');
+    navLinkElements.forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-target');
+            sayfalar.forEach(s => s.classList.remove('aktif'));
+            document.getElementById(targetId).classList.add('aktif');
+            // Sayfa geçişlerinde modalı kapatmak iyi bir kullanıcı deneyimi olabilir
+            modals.forEach(modal => {
+                if (modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    });
+
+    // === MODAL ELEMENTLERİ ===
+    const projeModal = document.getElementById('proje-modal');
+    const demoModal = document.getElementById('demo-modal');
+    const modals = [projeModal, demoModal];
+
+    modals.forEach(modal => {
+        if (modal) {
+            const closeButton = modal.querySelector('.close-button');
+            if (closeButton) { // closeButton'ın varlığını kontrol et
+                closeButton.onclick = () => modal.style.display = "none";
+            }
+        }
+    });
+
+    window.onclick = event => {
+        modals.forEach(modal => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    };
+
+    // === AKSİYON BUTONLARI ===
+    document.body.addEventListener('click', function(event) {
+
+        // Kodu Göster/Gizle
+        if (event.target.matches('.btn-goster')) {
+            const wrapper = event.target.closest('.kod-blogu-wrapper');
+            const kodBlok = wrapper.querySelector('.kod-blogu');
+            kodBlok.classList.toggle('acik');
+            event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
+        }
+
+        // Kopyala
+        if (event.target.matches('.btn-kopyala')) {
+            const wrapper = event.target.closest('.kod-blogu');
+            const kod = wrapper.querySelector('code').innerText;
+            navigator.clipboard.writeText(kod).then(() => {
+                event.target.classList.add('kopyalandi');
+                setTimeout(() => event.target.classList.remove('kopyalandi'), 1500);
+            });
+        }
+
+        // Demo
+        if (event.target.matches('.btn-demo')) {
+            const kodId = event.target.dataset.id;
+            const kodData = tumVeri.kodlar.find(k => k.id === kodId);
+            if(kodData) demoyuBaslat(kodData);
+        }
+    });
+
+    // VERİLERİ YÜKLE
+    let tumVeri = {};
+    async function verileriYukle() {
+        try {
+            const response = await fetch('data.json');
+            tumVeri = await response.json();
+
+            const projelerListesi = document.getElementById('projeler-listesi');
+            projelerListesi.innerHTML = '';
+            tumVeri.projeler.forEach(proje => {
+                const projeElementi = document.createElement('div');
+                projeElementi.className = 'proje-karti';
+                projeElementi.dataset.id = proje.id;
+                const kapakResmi = proje.resimler?.[0] || 'images/default.png';
+                projeElementi.innerHTML = `<img src="${kapakResmi}" alt="${proje.baslik}"><div class="proje-karti-icerik"><h3>${proje.baslik}</h3><p>${proje.aciklama}</p></div>`;
+                projeElementi.addEventListener('click', () => detaylariGoster(proje));
+                projelerListesi.appendChild(projeElementi);
+            });
+
+            const kodlarListesi = document.getElementById('kodlar-listesi');
+            kodlarListesi.innerHTML = '';
+            tumVeri.kodlar.forEach(kod => {
+                const element = document.createElement('div');
+                if (kod.tip === 'indir') {
+                    element.className = 'indir-karti';
+                    element.innerHTML = `<h3>${kod.baslik}</h3><p>${kod.aciklama}</p><a href="${kod.dosyaYolu}" class="btn" download>İndir</a>`;
+                } else {
+                    element.className = 'kod-karti';
+                    const guvenliKod = kod.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    let demoButton = kod.demo ? `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>` : '';
+                    element.innerHTML = `
+                        <h3>${kod.baslik}</h3>
+                        <p>${kod.aciklama}</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                ${demoButton}
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>${guvenliKod}</code></pre>
+                            </div>
+                        </div>
+                    `;
+                }
+                kodlarListesi.appendChild(element);
+            });
+
+        } catch (error) { console.error('Veri Yüklenemedi:', error); }
+    }
+
+    function detaylariGoster(proje) {
+        document.getElementById('modal-title').textContent = proje.baslik;
+
+        const imagesContainer = document.getElementById('modal-images');
+        imagesContainer.innerHTML = '';
+        proje.resimler.forEach(resimUrl => {
+            imagesContainer.innerHTML += `<img src="${resimUrl}" alt="${proje.baslik} resmi">`;
+        });
+
+        const materialsContainer = document.getElementById('modal-materials');
+        materialsContainer.innerHTML = '';
+        proje.malzemeler.forEach(malzeme => {
+            materialsContainer.innerHTML += `<li>${malzeme}</li>`;
+        });
+
+        const codesContainer = document.getElementById('modal-codes');
+        codesContainer.innerHTML = '';
+        proje.kodBloklari.forEach(blok => {
+            const guvenliKod = blok.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            codesContainer.innerHTML += `
+            <div class="kod-blogu-wrapper">
+                <h4>${blok.dil}</h4>
+                <div class="kod-actions">
+                    <button class="btn btn-goster">Kodu Göster</button>
+                </div>
+                <div class="kod-blogu">
+                    <button class="btn btn-kopyala">📋</button>
+                    <pre><code>${guvenliKod}</code></pre>
+                </div>
+            </div>`;
+        });
+
+        projeModal.style.display = "block";
+    }
+
     // === DEMO BAŞLATMA ===
     function demoyuBaslat(kodData) {
         const title = document.getElementById('demo-modal-title');
@@ -132,9 +289,11 @@
                 `;
                 const demoCheckbox = content.querySelector("#demoThemeCheckbox");
                 const demoBody = content.querySelector("#demo-karanlik-mod-body");
-                demoCheckbox.addEventListener("change", () => {
-                    demoBody.classList.toggle("dark", demoCheckbox.checked);
-                });
+                if (demoCheckbox && demoBody) {
+                    demoCheckbox.addEventListener("change", () => {
+                        demoBody.classList.toggle("dark", demoCheckbox.checked);
+                    });
+                }
                 break;
 
             case 'python-sifreli-liste-yoneticisi':
@@ -160,46 +319,48 @@
                 const gosterBtn = document.getElementById('gosterBtn');
                 const listeSonuc = document.getElementById('listeSonuc');
 
-                sifreGirisInput.addEventListener('input', () => {
-                    if (sifreGirisInput.value === demoListeSifre) {
-                        yoneticiKontrolleri.style.display = 'block';
-                        listeSonuc.textContent = "Giriş başarılı!";
-                    } else {
-                        yoneticiKontrolleri.style.display = 'none';
-                        listeSonuc.textContent = "Yanlış şifre!";
-                    }
-                });
+                if (sifreGirisInput && yoneticiKontrolleri && ekleCikarInput && ekleBtn && cikarBtn && gosterBtn && listeSonuc) {
+                    sifreGirisInput.addEventListener('input', () => {
+                        if (sifreGirisInput.value === demoListeSifre) {
+                            yoneticiKontrolleri.style.display = 'block';
+                            listeSonuc.textContent = "Giriş başarılı!";
+                        } else {
+                            yoneticiKontrolleri.style.display = 'none';
+                            listeSonuc.textContent = "Yanlış şifre!";
+                        }
+                    });
 
-                ekleBtn.addEventListener('click', () => {
-                    const eleman = ekleCikarInput.value.trim();
-                    if (eleman) {
-                        demoListe.push(eleman);
-                        listeSonuc.textContent = `'${eleman}' listeye eklendi.`;
-                        ekleCikarInput.value = '';
-                    } else {
-                        listeSonuc.textContent = 'Lütfen bir eleman girin.';
-                    }
-                });
+                    ekleBtn.addEventListener('click', () => {
+                        const eleman = ekleCikarInput.value.trim();
+                        if (eleman) {
+                            demoListe.push(eleman);
+                            listeSonuc.textContent = `'${eleman}' listeye eklendi.`;
+                            ekleCikarInput.value = '';
+                        } else {
+                            listeSonuc.textContent = 'Lütfen bir eleman girin.';
+                        }
+                    });
 
-                cikarBtn.addEventListener('click', () => {
-                    const eleman = ekleCikarInput.value.trim();
-                    const index = demoListe.indexOf(eleman);
-                    if (index > -1) {
-                        demoListe.splice(index, 1);
-                        listeSonuc.textContent = `'${eleman}' listeden çıkarıldı.`;
-                        ekleCikarInput.value = '';
-                    } else {
-                        listeSonuc.textContent = `'${eleman}' listede bulunamadı.`;
-                    }
-                });
+                    cikarBtn.addEventListener('click', () => {
+                        const eleman = ekleCikarInput.value.trim();
+                        const index = demoListe.indexOf(eleman);
+                        if (index > -1) {
+                            demoListe.splice(index, 1);
+                            listeSonuc.textContent = `'${eleman}' listeden çıkarıldı.`;
+                            ekleCikarInput.value = '';
+                        } else {
+                            listeSonuc.textContent = `'${eleman}' listede bulunamadı.`;
+                        }
+                    });
 
-                gosterBtn.addEventListener('click', () => {
-                    if (demoListe.length > 0) {
-                        listeSonuc.textContent = `Liste: ${demoListe.join(', ')}`;
-                    } else {
-                        listeSonuc.textContent = 'Liste boş.';
-                    }
-                });
+                    gosterBtn.addEventListener('click', () => {
+                        if (demoListe.length > 0) {
+                            listeSonuc.textContent = `Liste: ${demoListe.join(', ')}`;
+                        } else {
+                            listeSonuc.textContent = 'Liste boş.';
+                        }
+                    });
+                }
                 break;
 
             case 'python-gelistirilmis-hesap-makinesi':
@@ -225,111 +386,121 @@
                 const hesaplaBtn = document.getElementById('hesaplaBtn');
                 const hesapSonuc = document.getElementById('hesapSonuc');
 
-                hesaplaBtn.addEventListener('click', () => {
-                    const s1 = parseFloat(sayi1Input.value);
-                    const s2 = parseFloat(sayi2Input.value);
-                    const islem = islemSecimi.value;
-                    let sonuc;
+                if (sayi1Input && sayi2Input && islemSecimi && hesaplaBtn && hesapSonuc) {
+                    hesaplaBtn.addEventListener('click', () => {
+                        const s1 = parseFloat(sayi1Input.value);
+                        const s2 = parseFloat(sayi2Input.value);
+                        const islem = islemSecimi.value;
+                        let sonuc;
 
-                    if (isNaN(s1) && islem !== "faktoriyel" && islem !== "karekok") {
-                        hesapSonuc.textContent = "Lütfen ilk sayıyı girin.";
-                        return;
-                    }
+                        if (isNaN(s1) && islem !== "faktoriyel" && islem !== "karekok") {
+                            hesapSonuc.textContent = "Lütfen ilk sayıyı girin.";
+                            return;
+                        }
 
-                    if (isNaN(s2) && islem !== "faktoriyel" && islem !== "karekok" && islem !== "toplama" && islem !== "cikarma" && islem !== "carpma" && islem !== "bolme" && islem !== "us_alma") {
-                        hesapSonuc.textContent = "Lütfen ikinci sayıyı girin.";
-                        return;
-                    }
+                        // Sayı 2'nin sadece gerekli işlemlerde kontrolü
+                        if (isNaN(s2) && ['toplama', 'cikarma', 'carpma', 'bolme', 'us_alma'].includes(islem)) {
+                            hesapSonuc.textContent = "Lütfen ikinci sayıyı girin.";
+                            return;
+                        }
 
-                    switch (islem) {
-                        case 'toplama':
-                            sonuc = s1 + s2;
-                            break;
-                        case 'cikarma':
-                            sonuc = s1 - s2;
-                            break;
-                        case 'carpma':
-                            sonuc = s1 * s2;
-                            break;
-                        case 'bolme':
-                            if (s2 === 0) {
-                                hesapSonuc.textContent = "Sıfıra bölme hatası!";
-                                return;
-                            }
-                            sonuc = s1 / s2;
-                            break;
-                        case 'us_alma':
-                            sonuc = Math.pow(s1, s2);
-                            break;
-                        case 'faktoriyel':
-                            if (isNaN(s1) || s1 < 0 || s1 % 1 !== 0) {
-                                hesapSonuc.textContent = "Faktöriyel için pozitif tam sayı girin.";
-                                return;
-                            }
-                            let fact = 1;
-                            for (let i = 2; i <= s1; i++) {
-                                fact *= i;
-                            }
-                            sonuc = fact;
-                            break;
-                        case 'karekok':
-                            if (isNaN(s1) || s1 < 0) {
-                                hesapSonuc.textContent = "Karekök için pozitif sayı girin.";
-                                return;
-                            }
-                            sonuc = Math.sqrt(s1);
-                            break;
-                        default:
-                            sonuc = "Geçersiz işlem";
-                    }
-                    hesapSonuc.textContent = `Sonuç: ${sonuc}`;
-                });
+                        switch (islem) {
+                            case 'toplama':
+                                sonuc = s1 + s2;
+                                break;
+                            case 'cikarma':
+                                sonuc = s1 - s2;
+                                break;
+                            case 'carpma':
+                                sonuc = s1 * s2;
+                                break;
+                            case 'bolme':
+                                if (s2 === 0) {
+                                    hesapSonuc.textContent = "Sıfıra bölme hatası!";
+                                    return;
+                                }
+                                sonuc = s1 / s2;
+                                break;
+                            case 'us_alma':
+                                sonuc = Math.pow(s1, s2);
+                                break;
+                            case 'faktoriyel':
+                                if (isNaN(s1) || s1 < 0 || s1 % 1 !== 0) {
+                                    hesapSonuc.textContent = "Faktöriyel için pozitif tam sayı girin.";
+                                    return;
+                                }
+                                let fact = 1;
+                                for (let i = 2; i <= s1; i++) {
+                                    fact *= i;
+                                }
+                                sonuc = fact;
+                                break;
+                            case 'karekok':
+                                if (isNaN(s1) || s1 < 0) {
+                                    hesapSonuc.textContent = "Karekök için pozitif sayı girin.";
+                                    return;
+                                }
+                                sonuc = Math.sqrt(s1);
+                                break;
+                            default:
+                                sonuc = "Geçersiz işlem";
+                        }
+                        hesapSonuc.textContent = `Sonuç: ${sonuc}`;
+                    });
+                }
                 break;
 
             case 'python-turtle-kalp':
                  content.innerHTML = `
                     <p>Bu demo, Python Turtle kütüphanesini taklit eder ve tarayıcıda bir kalp çizer.</p>
-                    <canvas id="kalpCanvas" width="300" height="200" style="border:1px solid #d3d3d3;"></canvas>
-                    <button id="kalpCizBtn" class="btn">Kalp Çiz</button>
+                    <canvas id="kalpCanvas" width="300" height="200" style="border:1px solid #d3d3d3; background-color: #f9f9f9;"></canvas>
+                    <button id="kalpCizBtn" class="btn" style="margin-top: 10px;">Kalp Çiz</button>
                  `;
                  const kalpCanvas = document.getElementById('kalpCanvas');
-                 const ctx = kalpCanvas.getContext('2d');
                  const kalpCizBtn = document.getElementById('kalpCizBtn');
 
-                 kalpCizBtn.addEventListener('click', () => {
-                    ctx.clearRect(0, 0, kalpCanvas.width, kalpCanvas.height); // Kanvası temizle
-                    ctx.strokeStyle = 'red';
-                    ctx.fillStyle = 'red';
-                    ctx.lineWidth = 3;
+                 if (kalpCanvas && kalpCizBtn) {
+                     const ctx = kalpCanvas.getContext('2d');
+                     kalpCizBtn.addEventListener('click', () => {
+                        ctx.clearRect(0, 0, kalpCanvas.width, kalpCanvas.height); // Kanvası temizle
+                        ctx.strokeStyle = 'red';
+                        ctx.fillStyle = 'red';
+                        ctx.lineWidth = 3;
 
-                    // Turtle başlangıç noktası ve yönünü ayarla (yaklaşık olarak)
-                    ctx.translate(kalpCanvas.width / 2, kalpCanvas.height / 2 + 30); // Ortaya yakın bir yere taşı
-                    ctx.rotate(Math.PI / 180 * -50); // İlk dönüş
+                        // Kanvasın ortasını orijin yapalım ve Y eksenini ters çevirelim (Turtle gibi)
+                        ctx.save(); // Mevcut durumu kaydet
+                        ctx.translate(kalpCanvas.width / 2, kalpCanvas.height / 2 + 50); // Ortaya yakın bir yere taşı
+                        ctx.scale(1, -1); // Y eksenini ters çevir
 
-                    ctx.beginPath();
-                    ctx.moveTo(0, 0); // Başlangıç noktası
-                    ctx.lineTo(0, -133); // forward(133)
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0); // Başlangıç noktası
+                        ctx.rotate(Math.PI / 180 * 50); // left(50)
+                        ctx.lineTo(0, 133); // forward(133)
 
-                    // İlk daire (approx)
-                    ctx.arc(50, -133, 50, Math.PI, 0, false); // circle(50, 200) - 200 dereceyi simüle etmek biraz karmaşık, basit bir yay çizelim
-                    
-                    ctx.rotate(Math.PI / 180 * 140); // right(140)
+                        // İlk yay (circle(50, 200) simülasyonu)
+                        // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise)
+                        // Turtle'ın soluna doğru (yeni koordinat sisteminde yukarıya doğru)
+                        ctx.arc(-50, 133, 50, Math.PI / 2, Math.PI * 1.5, true); // Sol üst çeyrekten başlayıp aşağıya doğru
 
-                    // İkinci daire (approx)
-                    ctx.arc(-50, -133, 50, Math.PI, 0, false);
+                        ctx.rotate(Math.PI / 180 * -140); // right(140)
 
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.stroke();
+                        // İkinci yay (diğer taraf)
+                        ctx.arc(50, 133, 50, Math.PI * 1.5, Math.PI / 2, true); // Sağ alt çeyrekten başlayıp yukarıya doğru
 
-                    // Kanvası eski durumuna döndür
-                    ctx.setTransform(1, 0, 0, 1, 0, 0);
-                 });
+                        ctx.closePath();
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.restore(); // Kanvası eski durumuna döndür
+                     });
+                 }
                  break;
 
             // Buraya diğer demo id’lerini JS ile ekleyebilirsin
-            // 'python-sinirsiz-mesaj' için demo eklenmemeli, güvenlik nedeniyle.
         }
 
         demoModal.style.display = 'block';
     }
+
+    verileriYukle();
+});
