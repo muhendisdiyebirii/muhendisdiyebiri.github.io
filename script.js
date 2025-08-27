@@ -40,11 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const wrapper = event.target.closest('.kod-blogu-wrapper');
             const kodBlok = wrapper.querySelector('.kod-blogu');
             kodBlok.classList.toggle('acik');
-
             event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
         }
 
-        // Kopyala Butonu
+        // Kopyala
         if (event.target.matches('.btn-kopyala')) {
             const wrapper = event.target.closest('.kod-blogu');
             const kod = wrapper.querySelector('code').innerText;
@@ -54,41 +53,38 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Demo Başlat
+        // Demo
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
             if(kodData) demoyuBaslat(kodData);
         }
-
     });
 
-    // === VERİLERİ YÜKLE ===
-    let tumVeri = {}; 
+    // VERİLERİ YÜKLE
+    let tumVeri = {};
     async function verileriYukle() {
         try {
             const response = await fetch('data.json');
             tumVeri = await response.json();
 
-            // Projeler
             const projelerListesi = document.getElementById('projeler-listesi');
             projelerListesi.innerHTML = '';
             tumVeri.projeler.forEach(proje => {
                 const projeElementi = document.createElement('div');
                 projeElementi.className = 'proje-karti';
                 projeElementi.dataset.id = proje.id;
-                const kapakResmi = proje.resimler && proje.resimler.length > 0 ? proje.resimler[0] : 'images/default.png';
+                const kapakResmi = proje.resimler?.[0] || 'images/default.png';
                 projeElementi.innerHTML = `<img src="${kapakResmi}" alt="${proje.baslik}"><div class="proje-karti-icerik"><h3>${proje.baslik}</h3><p>${proje.aciklama}</p></div>`;
                 projeElementi.addEventListener('click', () => detaylariGoster(proje));
                 projelerListesi.appendChild(projeElementi);
             });
 
-            // Kodlar
             const kodlarListesi = document.getElementById('kodlar-listesi');
             kodlarListesi.innerHTML = '';
             tumVeri.kodlar.forEach(kod => {
                 const element = document.createElement('div');
-                if(kod.tip === 'indir') {
+                if (kod.tip === 'indir') {
                     element.className = 'indir-karti';
                     element.innerHTML = `<h3>${kod.baslik}</h3><p>${kod.aciklama}</p><a href="${kod.dosyaYolu}" class="btn" download>İndir</a>`;
                 } else {
@@ -113,12 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 kodlarListesi.appendChild(element);
             });
 
-        } catch (error) {
-            console.error('Veri Yüklenemedi:', error);
-        }
+        } catch (error) { console.error('Veri Yüklenemedi:', error); }
     }
 
-    // === PROJE DETAYLARI ===
     function detaylariGoster(proje) {
         document.getElementById('modal-title').textContent = proje.baslik;
 
@@ -154,15 +147,15 @@ document.addEventListener('DOMContentLoaded', function() {
         projeModal.style.display = "block";
     }
 
-    // === DEMO BAŞLAT ===
+    // === DEMO BAŞLATMA ===
     function demoyuBaslat(kodData) {
         const title = document.getElementById('demo-modal-title');
         const content = document.getElementById('demo-modal-content');
         title.textContent = kodData.baslik;
         content.innerHTML = '';
 
+        // JS mantığıyla tüm demo id'leri
         switch(kodData.id) {
-
             case 'python-sayi-tahmin':
                 let sayi = Math.ceil(Math.random() * 100);
                 content.innerHTML = `
@@ -174,9 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('tahminButton').addEventListener('click', () => {
                     const tahmin = parseInt(document.getElementById('tahminInput').value);
                     const sonuc = document.getElementById('tahminSonuc');
-                    if(tahmin === sayi){
-                        sonuc.innerHTML = `🎉 Tebrikler, doğru tahmin! Sayı ${sayi} idi.`;
-                    } else if(tahmin > sayi){
+                    if (tahmin === sayi) {
+                        sonuc.innerHTML = `🎉 Tebrikler, doğru tahmin! Sayı ${sayi} idi. Yeni oyun için pencereyi kapatıp tekrar aç.`;
+                    } else if (tahmin > sayi) {
                         sonuc.textContent = 'Daha küçük bir sayı gir.';
                     } else {
                         sonuc.textContent = 'Daha büyük bir sayı gir.';
@@ -192,17 +185,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button class="btn tkm-secim" data-secim="Makas">Makas</button>
                     <p id="tkmSonuc"></p>
                 `;
-                document.querySelectorAll('.tkm-secim').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const oyuncu = e.target.dataset.secim;
-                        const secenekler = ["Taş","Kağıt","Makas"];
-                        const bilgisayar = secenekler[Math.floor(Math.random()*3)];
+                document.querySelectorAll('.tkm-secim').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const oyuncuSecimi = e.target.dataset.secim;
+                        const secenekler = ["Taş", "Kağıt", "Makas"];
+                        const bilgisayarSecimi = secenekler[Math.floor(Math.random() * 3)];
                         const sonuc = document.getElementById('tkmSonuc');
-                        let text = `Senin seçimin: <strong>${oyuncu}</strong>, Bilgisayarın seçimi: <strong>${bilgisayar}</strong>.<br>`;
-                        if(oyuncu === bilgisayar) text += "Berabere!";
-                        else if((oyuncu==="Taş" && bilgisayar==="Makas")||(oyuncu==="Kağıt" && bilgisayar==="Taş")||(oyuncu==="Makas" && bilgisayar==="Kağıt")) text += "Kazandın!";
-                        else text += "Kaybettin!";
-                        sonuc.innerHTML = text;
+                        let sonucText = `Senin seçimin: <strong>${oyuncuSecimi}</strong>, Bilgisayarın seçimi: <strong>${bilgisayarSecimi}</strong>.<br>`;
+                        if (oyuncuSecimi === bilgisayarSecimi) {
+                            sonucText += "Berabere!";
+                        } else if (
+                            (oyuncuSecimi === "Taş" && bilgisayarSecimi === "Makas") ||
+                            (oyuncuSecimi === "Kağıt" && bilgisayarSecimi === "Taş") ||
+                            (oyuncuSecimi === "Makas" && bilgisayarSecimi === "Kağıt")
+                        ) {
+                            sonucText += "Kazandın!";
+                        } else {
+                            sonucText += "Kaybettin!";
+                        }
+                        sonuc.innerHTML = sonucText;
                     });
                 });
                 break;
@@ -215,14 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p id="sifreSonuc"></p>
                 `;
                 document.getElementById('sifreButton').addEventListener('click', () => {
-                    const len = parseInt(document.getElementById('sifreUzunluk').value);
-                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%&*?";
+                    const uzunluk = parseInt(document.getElementById('sifreUzunluk').value);
+                    const karakterler = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#%&*?";
                     let sifre = '';
-                    for(let i=0;i<len;i++) sifre += chars.charAt(Math.floor(Math.random()*chars.length));
+                    for (let i = 0; i < uzunluk; i++) {
+                        sifre += karakterler.charAt(Math.floor(Math.random() * karakterler.length));
+                    }
                     document.getElementById('sifreSonuc').textContent = `Oluşturulan Şifre: ${sifre}`;
                 });
                 break;
 
+            // Buraya diğer demo id’lerini JS ile ekleyebilirsin
         }
 
         demoModal.style.display = 'block';
