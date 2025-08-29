@@ -1,4 +1,43 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function(    // === ATATÜRK GIF VE GENÇLİĞE HİTABE LOGİĞİ ===
+    const ataturkGif = document.getElementById('ataturkGif');
+    const hitabeContainer = document.getElementById('hitabeContainer');
+    const gencligeHitabe = document.getElementById('gencligeHitabe');
+
+    const hitabeMetni = `Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.
+
+Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve Cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şerâitini düşünmeyeceksin! Bu imkân ve şerâit, çok nâmüsait bir mahiyette tezahür edebilir. İstiklâl ve Cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şerâitten daha elim ve daha vahim olmak üzere, memleketin dâhilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr ü zaruret içinde harap ve bîtap düşmüş olabilir.
+
+Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazifen, Türk İstiklâl ve Cumhuriyetini kurtarmaktır! Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
+`;
+
+    if (gencligeHitabe) { // gencligeHitabe elementinin varlığını kontrol et
+        gencligeHitabe.textContent = hitabeMetni; // Metni pre etiketine yerleştir
+    }
+    
+    if (ataturkGif && hitabeContainer) { // Her iki elementin de varlığını kontrol et
+        ataturkGif.addEventListener('click', () => {
+            hitabeContainer.classList.toggle('hitabe-visible');
+            // Gençliğe Hitabe açıldığında scroll'u en üste getir
+            if (hitabeContainer.classList.contains('hitabe-visible')) {
+                hitabeContainer.scrollTop = 0;
+            }
+        });
+
+        // Hitabe açıkken dışarı tıklayınca kapatma
+        hitabeContainer.addEventListener('click', (event) => {
+            if (event.target === hitabeContainer) { // Sadece kapsayıcıya tıklanırsa kapat
+                hitabeContainer.classList.remove('hitabe-visible');
+            }
+        });
+
+        // ESC tuşuna basıldığında hitabeyi kapatma
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && hitabeContainer.classList.contains('hitabe-visible')) {
+                hitabeContainer.classList.remove('hitabe-visible');
+            }
+        });
+    }
+    // === ATATÜRK GIF VE GENÇLİĞE HİTABE LOGİĞİ SONU ===) {
 
     // === SAYFA GEÇİŞLERİ ===
     const navLinkElements = document.querySelectorAll('.nav-link');
@@ -504,3 +543,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     verileriYukle();
 });
+
