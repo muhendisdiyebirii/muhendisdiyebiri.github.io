@@ -46,14 +46,18 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
         link.addEventListener('click', e => {
             e.preventDefault();
             const targetId = link.getAttribute('data-target');
-            sayfalar.forEach(s => s.classList.remove('aktif'));
-            document.getElementById(targetId).classList.add('aktif');
-            // Sayfa geçişlerinde modalı kapatmak iyi bir kullanıcı deneyimi olabilir
-            modals.forEach(modal => {
-                if (modal) {
-                    modal.style.display = "none";
+                sayfalar.forEach(s => s.classList.remove('aktif'));
+                document.getElementById(targetId).classList.add('aktif');
+// Sayfa geçişlerinde tüm modal pencereleri kapat
+                modals.forEach(modal => {
+            if (modal) {
+                modal.style.display = "none";
                 }
             });
+// Gençliğe Hitabe modalını da kapat
+if (hitabeContainer) { // hitabeContainer'ın tanımlı olduğundan emin olalım
+    hitabeContainer.classList.remove('hitabe-visible');
+}
         });
     });
 
@@ -543,4 +547,5 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
 
     verileriYukle();
 });
+
 
