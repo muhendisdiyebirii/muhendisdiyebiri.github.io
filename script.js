@@ -1,26 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // === TEMEL ELEMENT TANIMLARI ===
+    // === TEMEL ELEMENTLER ===
     const navLinkElements = document.querySelectorAll('.nav-link');
     const sayfalar = document.querySelectorAll('.sayfa');
     const projeModal = document.getElementById('proje-modal');
     const demoModal = document.getElementById('demo-modal');
     const modals = [projeModal, demoModal]; 
 
-    // === ATATÜRK GIF VE GENÇLİĞE HİTABE ELEMENT TANIMLARI ===
+    // === ATATÜRK GIF VE GENÇLİĞE HİTABE ELEMENTLER ===
     const ataturkGif = document.getElementById('ataturkGif');
     const hitabeContainer = document.getElementById('hitabeContainer');
     const gencligeHitabe = document.getElementById('gencligeHitabe');
 
     const hitabeMetni = `Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.
 
-Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. ...`;
+Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve Cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şerâitini düşünmeyeceksin! Bu imkân ve şerâit, çok nâmüsait bir mahiyette tezahür edebilir. İstiklâl ve Cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şerâitten daha elim ve daha vahim olmak üzere, memleketin dâhilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr ü zaruret içinde harap ve bîtap düşmüş olabilir.
 
-    if (gencligeHitabe) {
-        gencligeHitabe.textContent = hitabeMetni;
-    }
+Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazifen, Türk İstiklâl ve Cumhuriyetini kurtarmaktır! Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
+`;
 
-    // === SAYFA GEÇİŞLERİ VE NAVİGASYON LOGİĞİ ===
+    if (gencligeHitabe) gencligeHitabe.textContent = hitabeMetni;
+
+    // === SAYFA GEÇİŞLERİ ===
     navLinkElements.forEach(link => {
         link.addEventListener('click', e => {
             e.preventDefault();
@@ -29,61 +30,49 @@ Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetl
             if (targetId === 'genclige-hitabe') {
                 if (hitabeContainer) {
                     hitabeContainer.classList.toggle('hitabe-visible');
-                    if (hitabeContainer.classList.contains('hitabe-visible')) {
-                        hitabeContainer.scrollTop = 0;
-                    }
+                    if (hitabeContainer.classList.contains('hitabe-visible')) hitabeContainer.scrollTop = 0;
                 }
-                return; 
+                return;
             }
 
             sayfalar.forEach(s => s.classList.remove('aktif'));
             const hedefSayfa = document.getElementById(targetId);
             if (hedefSayfa) hedefSayfa.classList.add('aktif');
 
-            modals.forEach(modal => {
-                if (modal) modal.style.display = "none";
-            });
+            modals.forEach(modal => { if (modal) modal.style.display = 'none'; });
             if (hitabeContainer) hitabeContainer.classList.remove('hitabe-visible');
         });
     });
 
-    // === MODAL KAPATMA LOGİĞİ ===
+    // === MODAL KAPATMA ===
     modals.forEach(modal => {
         if (modal) {
             const closeButton = modal.querySelector('.close-button');
-            if (closeButton) closeButton.onclick = () => modal.style.display = "none";
+            if (closeButton) closeButton.onclick = () => modal.style.display = 'none';
         }
     });
 
     window.onclick = event => {
-        modals.forEach(modal => {
-            if (event.target === modal) modal.style.display = "none";
-        });
+        modals.forEach(modal => { if (event.target === modal) modal.style.display = 'none'; });
         if (event.target === hitabeContainer) hitabeContainer.classList.remove('hitabe-visible');
     };
 
     document.addEventListener('keydown', event => {
         if (event.key === 'Escape') {
-            modals.forEach(modal => {
-                if (modal && modal.style.display === 'block') modal.style.display = "none";
-            });
-            if (hitabeContainer && hitabeContainer.classList.contains('hitabe-visible')) {
-                hitabeContainer.classList.remove('hitabe-visible');
-            }
+            modals.forEach(modal => { if (modal && modal.style.display === 'block') modal.style.display = 'none'; });
+            if (hitabeContainer && hitabeContainer.classList.contains('hitabe-visible')) hitabeContainer.classList.remove('hitabe-visible');
         }
     });
 
     if (ataturkGif && hitabeContainer) {
         ataturkGif.addEventListener('click', () => {
             hitabeContainer.classList.toggle('hitabe-visible');
-            if (hitabeContainer.classList.contains('hitabe-visible')) {
-                hitabeContainer.scrollTop = 0;
-            }
+            if (hitabeContainer.classList.contains('hitabe-visible')) hitabeContainer.scrollTop = 0;
         });
     }
 
-    // === AKSİYON BUTONLARI (Kodu Göster/Gizle, Kopyala, Demo) ===
-    document.body.addEventListener('click', function(event) {
+    // === BUTON OLAYLARI ===
+    document.body.addEventListener('click', event => {
         if (event.target.matches('.btn-goster')) {
             const wrapper = event.target.closest('.kod-blogu-wrapper');
             const kodBlok = wrapper.querySelector('.kod-blogu');
@@ -103,7 +92,7 @@ Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetl
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
-            if(kodData) demoyuBaslat(kodData);
+            if(kodData && kodData.kod) demoyuBaslat(kodData);
         }
     });
 
@@ -114,6 +103,7 @@ Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetl
             const response = await fetch('data.json');
             tumVeri = await response.json();
 
+            // Projeler
             const projelerListesi = document.getElementById('projeler-listesi');
             projelerListesi.innerHTML = '';
             tumVeri.projeler.forEach(proje => {
@@ -126,6 +116,7 @@ Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetl
                 projelerListesi.appendChild(projeElementi);
             });
 
+            // Kodlar
             const kodlarListesi = document.getElementById('kodlar-listesi');
             kodlarListesi.innerHTML = '';
             tumVeri.kodlar.forEach(kod => {
@@ -203,8 +194,17 @@ Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetl
     function demoyuBaslat(kodData) {
         const title = document.getElementById('demo-modal-title');
         const content = document.getElementById('demo-modal-content');
+        content.innerHTML = ''; 
         title.textContent = kodData.baslik;
-        content.innerHTML = `<pre><code>${kodData.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`;
+
+        // Eğer demo kod JS ise çalıştırabiliriz
+        try {
+            content.innerHTML = `<pre><code>${kodData.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`;
+            // NOT: Eğer gerçek bir canlı demo istiyorsan, kodData.kod içeriğini eval veya iframe ile çalıştırman gerek
+        } catch (err) {
+            console.error('Demo başlatılamadı:', err);
+        }
+
         demoModal.style.display = 'block';
     }
 
