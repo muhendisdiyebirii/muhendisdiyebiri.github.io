@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sayfalar = document.querySelectorAll('.sayfa');
     const projeModal = document.getElementById('proje-modal');
     const demoModal = document.getElementById('demo-modal');
-    const modals = [projeModal, demoModal]; // Tüm modal pencereleri tek bir diziye aldık
+    const modals = [projeModal, demoModal]; 
 
     // === ATATÜRK GIF VE GENÇLİĞE HİTABE ELEMENT TANIMLARI ===
     const ataturkGif = document.getElementById('ataturkGif');
@@ -14,12 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const hitabeMetni = `Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.
 
-Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve Cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şerâitini düşünmeyeceksin! Bu imkân ve şerâit, çok nâmüsait bir mahiyette tezahür edebilir. İstiklâl ve Cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şerâitten daha elim ve daha vahim olmak üzere, memleketin dâhilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr ü zaruret içinde harap ve bîtap düşmüş olabilir.
+Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. ...`;
 
-Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazifen, Türk İstiklâl ve Cumhuriyetini kurtarmaktır! Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
-`;
-
-    // Gençliğe Hitabe metnini ilgili elemente yerleştir
     if (gencligeHitabe) {
         gencligeHitabe.textContent = hitabeMetni;
     }
@@ -30,66 +26,46 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
             e.preventDefault();
             const targetId = link.getAttribute('data-target');
 
-            // Eğer "Gençliğe Hitabe" linkine tıklanırsa
             if (targetId === 'genclige-hitabe') {
                 if (hitabeContainer) {
                     hitabeContainer.classList.toggle('hitabe-visible');
-                    // Hitabe açıldığında scroll'u en üste getir
                     if (hitabeContainer.classList.contains('hitabe-visible')) {
                         hitabeContainer.scrollTop = 0;
                     }
                 }
-                // Diğer sayfa geçişlerini yapmadan fonksiyondan çık
                 return; 
             }
 
-            // Normal sayfa geçişleri
             sayfalar.forEach(s => s.classList.remove('aktif'));
-            document.getElementById(targetId).classList.add('aktif');
-            
-            // Sayfa değiştiğinde tüm modal pencereleri ve Gençliğe Hitabe modalını kapat
+            const hedefSayfa = document.getElementById(targetId);
+            if (hedefSayfa) hedefSayfa.classList.add('aktif');
+
             modals.forEach(modal => {
-                if (modal) {
-                    modal.style.display = "none";
-                }
+                if (modal) modal.style.display = "none";
             });
-            if (hitabeContainer) {
-                hitabeContainer.classList.remove('hitabe-visible');
-            }
+            if (hitabeContainer) hitabeContainer.classList.remove('hitabe-visible');
         });
     });
 
-    // === MODAL KAPATMA LOGİĞİ (Tüm Modallar için geçerli) ===
+    // === MODAL KAPATMA LOGİĞİ ===
     modals.forEach(modal => {
         if (modal) {
             const closeButton = modal.querySelector('.close-button');
-            if (closeButton) {
-                closeButton.onclick = () => modal.style.display = "none";
-            }
+            if (closeButton) closeButton.onclick = () => modal.style.display = "none";
         }
     });
 
-    // Boş alana tıklayınca modalları kapat
     window.onclick = event => {
         modals.forEach(modal => {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
+            if (event.target === modal) modal.style.display = "none";
         });
-        // Gençliğe Hitabe modalı için de aynı kontrol
-        if (event.target == hitabeContainer) {
-            if (hitabeContainer) {
-                hitabeContainer.classList.remove('hitabe-visible');
-            }
-        }
+        if (event.target === hitabeContainer) hitabeContainer.classList.remove('hitabe-visible');
     };
-    // ESC tuşuna basıldığında tüm modal pencereleri kapat
-    document.addEventListener('keydown', (event) => {
+
+    document.addEventListener('keydown', event => {
         if (event.key === 'Escape') {
             modals.forEach(modal => {
-                if (modal && modal.style.display === 'block') {
-                    modal.style.display = 'none';
-                }
+                if (modal && modal.style.display === 'block') modal.style.display = "none";
             });
             if (hitabeContainer && hitabeContainer.classList.contains('hitabe-visible')) {
                 hitabeContainer.classList.remove('hitabe-visible');
@@ -97,20 +73,17 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
         }
     });
 
-
-    // === ATATÜRK GIF'İNE ÖZEL TIKLAMA OLAYI ===
     if (ataturkGif && hitabeContainer) {
         ataturkGif.addEventListener('click', () => {
             hitabeContainer.classList.toggle('hitabe-visible');
             if (hitabeContainer.classList.contains('hitabe-visible')) {
-                hitabeContainer.scrollTop = 0; // Açıldığında en üste kaydır
+                hitabeContainer.scrollTop = 0;
             }
         });
     }
 
     // === AKSİYON BUTONLARI (Kodu Göster/Gizle, Kopyala, Demo) ===
     document.body.addEventListener('click', function(event) {
-        // Kodu Göster/Gizle
         if (event.target.matches('.btn-goster')) {
             const wrapper = event.target.closest('.kod-blogu-wrapper');
             const kodBlok = wrapper.querySelector('.kod-blogu');
@@ -118,7 +91,6 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
             event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
         }
 
-        // Kopyala
         if (event.target.matches('.btn-kopyala')) {
             const wrapper = event.target.closest('.kod-blogu');
             const kod = wrapper.querySelector('code').innerText;
@@ -128,7 +100,6 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
             });
         }
 
-        // Demo
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
@@ -136,7 +107,7 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
         }
     });
 
-    // VERİLERİ YÜKLE
+    // === VERİLERİ YÜKLE ===
     let tumVeri = {};
     async function verileriYukle() {
         try {
@@ -184,9 +155,14 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
                 kodlarListesi.appendChild(element);
             });
 
-        } catch (error) { console.error('Veri Yüklenemedi:', error); }
+        } catch (error) {
+            console.error('Veri Yüklenemedi:', error);
+        }
     }
 
+    verileriYukle();
+
+    // === DETAYLARI GÖSTER ===
     function detaylariGoster(proje) {
         document.getElementById('modal-title').textContent = proje.baslik;
 
@@ -214,3 +190,22 @@ Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazife
                 </div>
                 <div class="kod-blogu">
                     <button class="btn btn-kopyala">📋</button>
+                    <pre><code>${guvenliKod}</code></pre>
+                </div>
+            </div>
+            `;
+        });
+
+        projeModal.style.display = 'block';
+    }
+
+    // === DEMO BAŞLAT ===
+    function demoyuBaslat(kodData) {
+        const title = document.getElementById('demo-modal-title');
+        const content = document.getElementById('demo-modal-content');
+        title.textContent = kodData.baslik;
+        content.innerHTML = `<pre><code>${kodData.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>`;
+        demoModal.style.display = 'block';
+    }
+
+});
