@@ -7,6 +7,7 @@
     --card-bg: rgba(20, 20, 40, 0.7);
     --font-header: 'Orbitron', sans-serif;
     --font-body: 'Share Tech Mono', monospace;
+    --primary-color-rgb: 0, 255, 255; /* RGB değerleri eklendi */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,24 +110,6 @@ pre { background: rgba(0,0,0,0.5); padding: 1rem; border-left: 3px solid var(--s
 #demo-modal-content .btn { margin-right: 10px; }
 #demo-modal-content p { margin-top: 1rem; line-height: 1.6; }
 
-/* === MOBİL UYUM (HAMBURGERSİZ) === */
-#hamburger-menu { display: none; }
-@media (max-width: 768px) {
-    nav { width: 95%; }
-    nav ul { gap: 1.2rem; }
-    nav a.nav-link { font-size: 0.85rem; letter-spacing: 1px; }
-    .logo { font-size: 1.6rem; }
-    .hero h1 { font-size: 2.2rem; }
-    main { width: 95%; margin: 2rem auto; }
-}
-@media (max-width: 480px) {
-    nav ul { gap: 0.8rem; }
-    nav a.nav-link { font-size: 0.75rem; letter-spacing: 0; }
-    .logo { font-size: 1.4rem; }
-    .hero h1 { font-size: 1.8rem; }
-    .modal-content { width: 95%; padding: 20px; margin: 15% auto; }
-
-}
 /* === ATATÜRK GIF VE GENÇLİĞE HİTABE STİLLERİ === */
 .ataturk-gif-container {
     position: fixed; /* Sabit konumda kalacak */
@@ -212,8 +195,15 @@ pre { background: rgba(0,0,0,0.5); padding: 1rem; border-left: 3px solid var(--s
     background: var(--secondary-color);
 }
 
-/* Mobil cihazlar için responsive ayarlar */
+/* === MOBİL UYUM (HAMBURGERSİZ) === */
+#hamburger-menu { display: none; }
 @media (max-width: 768px) {
+    nav { width: 95%; }
+    nav ul { gap: 1.2rem; }
+    nav a.nav-link { font-size: 0.85rem; letter-spacing: 1px; }
+    .logo { font-size: 1.6rem; }
+    .hero h1 { font-size: 2.2rem; }
+    main { width: 95%; margin: 2rem auto; }
     .ataturk-gif-container {
         bottom: 10px;
         right: 10px;
@@ -230,4 +220,11 @@ pre { background: rgba(0,0,0,0.5); padding: 1rem; border-left: 3px solid var(--s
     #gencligeHitabe {
         font-size: 0.9em;
     }
+}
+@media (max-width: 480px) {
+    nav ul { gap: 0.8rem; }
+    nav a.nav-link { font-size: 0.75rem; letter-spacing: 0; }
+    .logo { font-size: 1.4rem; }
+    .hero h1 { font-size: 1.8rem; }
+    .modal-content { width: 95%; padding: 20px; margin: 15% auto; }
 }
