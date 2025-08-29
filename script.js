@@ -1,25 +1,182 @@
 document.addEventListener('DOMContentLoaded', function() {
-
     // === TEMEL ELEMENT TANIMLARI ===
     const navLinkElements = document.querySelectorAll('.nav-link');
     const sayfalar = document.querySelectorAll('.sayfa');
     const projeModal = document.getElementById('proje-modal');
     const demoModal = document.getElementById('demo-modal');
-    const modals = [projeModal, demoModal]; 
+    const modals = [projeModal, demoModal];
 
     // === ATATÜRK GIF VE GENÇLİĞE HİTABE ELEMENT TANIMLARI ===
     const ataturkGif = document.getElementById('ataturkGif');
     const hitabeContainer = document.getElementById('hitabeContainer');
-    const gencligeHitabe = document.getElementById('gencligeHitabe');
+    const gencligeHitabeElement = document.getElementById('gencligeHitabe'); // Element adını değiştirdim
+    const hitabeMetni = `Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir. Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve Cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şerâitini düşünmeyeceksin! Bu imkân ve şerâit, çok nâmüsait bir mahiyette tezahür edebilir. İstiklâl ve Cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şerâitten daha elim ve daha vahim olmak üzere, memleketin dâhilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr ü zaruret içinde harap ve bîtap düşmüş olabilir. Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazifen, Türk İstiklâl ve Cumhuriyetini kurtarmaktır! Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!`;
 
-    const hitabeMetni = `Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.
-...
-Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
-`;
-
-    if (gencligeHitabe) {
-        gencligeHitabe.textContent = hitabeMetni;
+    if (gencligeHitabeElement) {
+        gencligeHitabeElement.textContent = hitabeMetni; // Metni atama
     }
+
+    // JSON verisini doğrudan JavaScript içine dahil et
+    let tumVeri = {
+        "projeler": [{
+            "id": "arduino-radar",
+            "baslik": "Arduino UNO ile Radar Sistemi",
+            "resimler": ["images/Ardunio-Radar-Sistemi.png"],
+            "aciklama": "Bu kod, evde basit bir şekilde radar sistemi yapabilmemizi ve prensiplerini öğrenebilmemizi sağlar. Sensörün değeri 20'nin altına düşerse radar sistemi durur ve bilgisayar ekranında engel algılandı uyarısı gösterilir.",
+            "malzemeler": [
+                "Ardunio UNO 1x",
+                "Servo Motor 1x",
+                "HC-SR04 Ultrasonik Mesafe Sensörü 1x",
+                "Dişi-Erkek Jumper Kablo 4x",
+                "Erkek-Erkek Jumper Kablo 3x"
+            ],
+            "kodBloklari": [{
+                "dil": "Arduino (C++)",
+                "kod": "#include <Servo.h>\n\n#define trigPin 9\n#define echoPin 10\n#define servoPin 6\n\nServo radarServo;\n\nvoid setup() {\n Serial.begin(9600);\n radarServo.attach(servoPin);\n pinMode(trigPin, OUTPUT);\n pinMode(echoPin, INPUT);\n}\n\nvoid loop() {\n for (int angle = 0; angle <= 180; angle += 2) {\n radarServo.write(angle);\n int distance = measureDistance();\n Serial.print(angle);\n Serial.print(\",\");\n Serial.println(distance);\n delay(50);\n }\n for (int angle = 180; angle >= 0; angle -= 2) {\n radarServo.write(angle);\n int distance = measureDistance();\n Serial.print(angle);\n Serial.print(\",\");\n Serial.println(distance);\n delay(50);\n }\n}\n\nint measureDistance() {\n digitalWrite(trigPin, LOW);\n delayMicroseconds(2);\n digitalWrite(trigPin, HIGH);\n delayMicroseconds(10);\n digitalWrite(trigPin, LOW);\n long duration = pulseIn(echoPin, HIGH);\n int distance = duration * 0.034 / 2;\n return distance;\n}"
+            }, {
+                "dil": "Processing",
+                "kod": "import processing.serial.*;\n\nSerial myPort;\nString data;\nfloat angle, distance;\n\nvoid setup() {\n size(600, 600);\n myPort = new Serial(this, Serial.list()[0], 9600);\n myPort.bufferUntil('\\n');\n}\n\nvoid draw() {\n background(0);\n translate(width / 2, height);\n stroke(0, 255, 0);\n noFill();\n arc(0, 0, 400, 400, PI, TWO_PI);\n arc(0, 0, 300, 300, PI, TWO_PI);\n arc(0, 0, 200, 200, PI, TWO_PI);\n arc(0, 0, 100, 100, PI, TWO_PI);\n stroke(255, 0, 0);\n float rad = radians(angle);\n float x = cos(rad) * distance * 2;\n float y = -sin(rad) * distance * 2;\n line(0, 0, x, y);\n ellipse(x, y, 10, 10);\n}\n\nvoid serialEvent(Serial myPort) {\n data = myPort.readStringUntil('\\n');\n if (data != null) {\n String[] values = split(trim(data), \",\");\n if (values.length == 2) {\n angle = float(values[0]);\n distance = float(values[1]);\n }\n }\n}"
+            }]
+        }, {
+            "id": "deneyap-hava-durumu",
+            "baslik": "DeneyapKart İle Hava Durumu",
+            "resimler": ["images/Deneyapkart-havadurumu.png"],
+            "aciklama": "Bu proje istediğimiz şehrin anlık hava durumunu internet olduğu sürece öğrenmemizi sağlar.",
+            "malzemeler": [
+                "LCD ekran SDA --> DeneyapKart SDA (veya A4)",
+                "LCD ekran SCL --> DeneyapKart SCL (veya A5)",
+                "LCD ekran GND --> DeneyapKart GND",
+                "LCD ekran VCC --> DeneyapKart VCC"
+            ],
+            "kodBloklari": [{
+                "dil": "Arduino (C++)",
+                "kod": "#include <WiFi.h>\n#include <HTTPClient.h>\n#include <ArduinoJson.h>\n#include <LiquidCrystal_I2C.h>\n\nconst char* ssid = \"wifi\"; // <---- Wi-Fi isminiz\nconst char* password = \"sifre\"; // <---- Wi-Fi şifreniz\nconst char* server = \"http://api.openweathermap.org/data/2.5/weather?q=Adana,tr&appid=7e46c1cd48cf48ecfb81239585f4ae07&units=metric&lang=tr\"; // <----Adana Yazan yeri kendi şehir isminizle değiştirin\n\nLiquidCrystal_I2C lcd(0x27, 16, 2);\n\nvoid setup() {\n Serial.begin(115200);\n lcd.begin();\n lcd.backlight();\n lcd.setCursor(0, 0);\n lcd.print(\"WiFi Baglaniyor\");\n WiFi.begin(ssid, password);\n while (WiFi.status() != WL_CONNECTED) {\n delay(500);\n Serial.print(\".\");\n }\n lcd.clear();\n lcd.setCursor(0, 0);\n lcd.print(\"WiFi Baglandi!\");\n delay(1000);\n lcd.clear();\n}\n\nvoid loop() {\n if (WiFi.status() == WL_CONNECTED) {\n HTTPClient http;\n http.begin(server);\n int httpCode = http.GET();\n if (httpCode > 0) {\n String payload = http.getString();\n DynamicJsonDocument doc(2048);\n DeserializationError error = deserializeJson(doc, payload);\n if (!error) {\n float sicaklik = doc[\"main\"][\"temp\"];\n const char* durum = doc[\"weather\"][0][\"description\"];\n lcd.clear();\n lcd.setCursor(0, 0);\n lcd.print(\"Sicaklik:\");\n lcd.print(sicaklik, 1);\n lcd.print(\" C\");\n lcd.setCursor(0, 1);\n lcd.print(durum);\n } else {\n lcd.clear();\n lcd.setCursor(0, 0);\n lcd.print(\"JSON HATA\");\n }\n } else {\n lcd.clear();\n lcd.setCursor(0, 0);\n lcd.print(\"Baglanti Hatasi\");\n }\n http.end();\n } else {\n lcd.clear();\n lcd.setCursor(0, 0);\n lcd.print(\"WiFi Yok\");\n }\n delay(60000);\n}"
+            }]
+        }, {
+            "id": "deneyap-led-kontrol",
+            "baslik": "DeneyapKart ile Bluetooth LED Kontrolü",
+            "resimler": ["images/dnyp-bluetooth-ledkontrol2.png", "images/dnyp-bluetooth-ledkontrol1.png"],
+            "aciklama": "Telefonunuz ile Bluetooth üzerinden DeneyapKart'a bağlı bir LED'i kontrol edin.",
+            "malzemeler": [
+                "DeneyapKart",
+                "220 ohm direnç",
+                "1 adet LED",
+                "2 adet dişi-erkek jumper kablo",
+                "1 adet breadboard"
+            ],
+            "kodBloklari": [{
+                "dil": "Arduino (C++)",
+                "kod": "#include <BluetoothSerial.h>\n\nBluetoothSerial SerialBT;\n\nvoid setup() {\n pinMode(D1, OUTPUT);\n SerialBT.begin(\"DeneyapKart\");\n}\n\nvoid loop() {\n if (SerialBT.available()) {\n char veri = SerialBT.read();\n if (veri == '1') {\n digitalWrite(D1, HIGH);\n }\n else if (veri == '0') {\n digitalWrite(D1, LOW);\n }\n }\n}"
+            }, {
+                "dil": "MIT App Inventor",
+                "kod": "Bu projenin mobil uygulaması için görsel blokları resimlerde görebilirsiniz. Bloklar, Bluetooth bağlantısını kurar ve 1/0 verisi göndererek LED'i kontrol eder."
+            }]
+        }, {
+            "id": "arduino-nano-gece-lambasi",
+            "baslik": "Arduino Nano İle Gece Lambası",
+            "resimler": ["images/ardunio-nano-gecelambası2.png", "images/ardunio-nano-gecelambası1.png"],
+            "aciklama": "Ortam ışığına duyarlı, hava karardığında otomatik yanan LDR'li gece lambası yapımı.",
+            "malzemeler": [
+                "Arduino Nano",
+                "BreadBoard",
+                "LDR",
+                "LED",
+                "10K Ohm direnç",
+                "220 ohm direnç"
+            ],
+            "kodBloklari": [{
+                "dil": "Arduino (C++)",
+                "kod": "const int ldrPin = A0;\nconst int ledPin = 3;\n\nvoid setup() {\n pinMode(ledPin, OUTPUT);\n}\n\nvoid loop() {\n int ldrValue = analogRead(ldrPin);\n if (ldrValue < 400) {\n digitalWrite(ledPin, HIGH);\n } else {\n digitalWrite(ledPin, LOW);\n }\n delay(100);\n}"
+            }]
+        }],
+        "kodlar": [{
+            "id": "python-sayi-tahmin",
+            "baslik": "Sayı Tahmin Oyunu",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Bilgisayarın 1-100 arasında tuttuğu sayıyı tahmin etmeye çalıştığınız bir oyun.",
+            "kod": "import random\n\ndef tahmin():\n sayi = random.randint(1, 100)\n while True:\n a = int(input(\"Bir sayı seçiniz:\"))\n if sayi == a:\n print(\"Tahmininiz doğru!\")\n break\n if sayi >= a:\n print(\"Daha Büyük bir sayı giriniz:\")\n if sayi <= a:\n print(\"Daha Küçük bir sayı giriniz:\")\n\ntahmin()"
+        }, {
+            "id": "python-tkm",
+            "baslik": "Taş-Kağıt-Makas Oyunu",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Bilgisayara karşı oynayabileceğiniz basit bir Taş-Kağıt-Makas oyunu.",
+            "kod": "import random\n\ndef secim():\n secenekler = [\"Taş\", \"Kağıt\", \"Makas\"]\n bilgisayar_secimi = random.choice(secenekler)\n oyuncu_secimi = input(\"Hadi bakalım! Taş mı, Kağıt mı, yoksa Makas mı? Seçimini yap: \").capitalize()\n\n if oyuncu_secimi not in secenekler:\n print(\"Öyle bir seçenek yok! Lütfen sadece 'Taş', 'Kağıt' veya 'Makas' yaz.\")\n return\n\n print(f\"Bilgisayarın tercihi: {bilgisayar_secimi}\")\n print(f\"Senin tercihin: {oyuncu_secimi}\")\n\n if bilgisayar_secimi == oyuncu_secimi:\n print(\"Berabere! Bu seferlik kimse kazanmadı.\")\n elif (bilgisayar_secimi == \"Taş\" and oyuncu_secimi == \"Makas\") or \\\n (bilgisayar_secimi == \"Kağıt\" and oyuncu_secimi == \"Taş\") or \\\n (bilgisayar_secimi == \"Makas\" and oyuncu_secimi == \"Kağıt\"):\n print(\"Kaybettin! Daha iyisini yapabilirsin.\")\n else:\n print(\"Tebrikler! Kazandın. Helal olsun!\")\n\nwhile True:\n secim()\n devam = input(\"Devam etmek istiyor musun? (E/h): \").lower()\n if devam != \"e\":\n print(\"Oyun bitti! Yine bekleriz.\")\n break"
+        }, {
+            "id": "python-sifre-olusturucu",
+            "baslik": "Rastgele Şifre Oluşturucu",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Belirttiğiniz uzunlukta güçlü ve rastgele şifreler oluşturan bir script.",
+            "kod": "import random\nimport string\n\n# Kullanıcıdan şifre uzunluğunu alma\nuzunluk = int(input(\"Şifrenizin Olmasını İstediğiniz Uzunluğu Giriniz:\"))\n\ndef sifre():\n # Şifre elemanlarını belirle: büyük/küçük harf, rakam ve özel karakterler\n eleman = string.ascii_letters + string.digits + \"!#+%&_\"\n # Random olarak şifre oluştur\n şifre = ''.join(random.choice(eleman) for i in range(uzunluk))\n # Oluşturulan şifreyi ekrana yazdır\n print(\"Şifreniz: \" + şifre)\n\n# Fonksiyonu çağır\nsifre()"
+        }, {
+            "id": "python-sinirsiz-mesaj",
+            "baslik": "Sınırsız Mesaj Atma Botu",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": false,
+            "aciklama": "PyAutoGUI kütüphanesi ile aktif pencereye sürekli olarak belirlediğiniz mesajı gönderir. (Güvenlik nedeniyle demosu yoktur!)",
+            "kod": "import pyautogui\nimport time\n\ndef mesaj():\n pyautogui.write(\"Kanka\")\n pyautogui.press('enter')\n\nwhile True:\n mesaj()"
+        }, {
+            "id": "html-cicek",
+            "baslik": "Animasyonlu Çiçek Projesi",
+            "dil": "HTML/CSS",
+            "tip": "indir",
+            "aciklama": "CSS animasyonları kullanılarak yapılmış, açılıp kapanan güzel bir çiçek efekti.",
+            "dosyaYolu": "downloads/animasyonlu-çiçek.html"
+        }, {
+            "id": "html-acilma",
+            "baslik": "Kıza Açılma Projesi",
+            "dil": "HTML/CSS/JS",
+            "tip": "indir",
+            "aciklama": "İnteraktif ve eğlenceli bir şekilde hazırlanmış bir web sayfası projesi.",
+            "dosyaYolu": "downloads/kıza-açılma.html"
+        }, {
+            "id": "python-dosya-uzanti-degistirici",
+            "baslik": "Dosya Uzantısı Değiştirici",
+            "dil": "Python",
+            "tip": "goster",
+            "aciklama": "Kullanıcının belirttiği dosyanın uzantısını kolayca değiştiren bir script.",
+            "kod": "import os\n\ndosya = input(\"Dosyanın tam adını giriniz(örnek.txt):\") #----> Dosya Yolumuz\n\nuzantı = input(\"Dosyanın olmasını istediğiniz uzantısını giriniz(.txt,.vbs vs.):\")\n\nyenidosya = os.path.splitext(dosya)[0] + (uzantı)\n\nos.rename(dosya, yenidosya)\n\nprint(f\"{dosya} -> {yenidosya} olarak değiştirildi.\")"
+        }, {
+            "id": "html-karanlik-mod",
+            "baslik": "Karanlık Mod Geçişi",
+            "dil": "HTML",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Kullanıcı checkbox işaretlediğinde sitenin temasını aydınlık ve karanlık mod arasında geçiş yapan basit bir örnek.",
+            "kod": "<!DOCTYPE html>\n<html lang=\"tr\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n body {\n font-family: Arial, sans-serif;\n transition: background 0.5s, color 0.5s;\n background: #f0f0f0;\n color: #333;\n text-align: center;\n padding-top: 50px;\n }\n body.dark {\n background: #222;\n color: white;\n }\n label {\n cursor: pointer;\n font-size: 18px;\n display: inline-flex;\n align-items: center;\n gap: 8px;\n }\n input[type=\"checkbox\"] {\n width: 20px;\n height: 20px;\n accent-color: #4cafef;\n transform: scale(1.2);\n transition: transform 0.2s ease;\n }\n input[type=\"checkbox\"]:hover {\n transform: scale(1.4);\n }\n</style>\n</head>\n<body>\n <label>\n <input type=\"checkbox\" id=\"themeCheckbox\">\n Karanlık Mod\n </label>\n<script>\n const checkbox = document.getElementById(\"themeCheckbox\");\n checkbox.addEventListener(\"change\", () => {\n document.body.classList.toggle(\"dark\", checkbox.checked);\n });\n</script>\n</body>\n</html>"
+        }, {
+            "id": "python-sifreli-liste-yoneticisi",
+            "baslik": "Şifreli Liste Yöneticisi",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Kullanıcının belirlediği şifre ile listeye eleman ekleme, çıkarma ve görüntüleme işlemleri yapılabilen basit bir yönetim sistemi.",
+            "kod": "sifre = int(input(\"Bir Şifre Belirleyiniz:\"))\n\ndef islem():\n print(\"İşlem Başarılı!\")\n\ndef sifre_kontrol():\n giris = int(input(\"Şifreyi Giriniz: \"))\n if giris == sifre:\n return True\n else:\n print(\"Hatalı Şifre!\")\n return False\n\nliste = [] \n\nwhile True:\n secim = input(\"1.Listeye Ekle\\n2.Listeden Çıkar\\n3.Listeyi Göster\\n4.Kapat\\nSeçiminizi Yapınız:\")\n\n if secim == \"1\":\n if sifre_kontrol(): \n ekle = input(\"Eklemek İstediğin Aktiviteyi Giriniz: \")\n liste.append(ekle)\n print(ekle + \" eklendi\")\n islem()\n\n elif secim == \"2\":\n if sifre_kontrol():\n print(liste)\n cikar = input(\"Listeden Çıkartmak İstediğiniz Aktiviteyi Giriniz: \")\n if cikar in liste:\n liste.remove(cikar)\n islem()\n else:\n print(\"Bu aktivite listede yok!\")\n\n elif secim == \"3\":\n if sifre_kontrol():\n print(liste)\n\n elif secim == \"4\":\n print(\"Program Kapatılıyor...\")\n break"
+        }, {
+            "id": "python-gelistirilmis-hesap-makinesi",
+            "baslik": "Hesap Makinesi",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Toplama, çıkarma, çarpma, bölme, üs alma, faktöriyel ve karekök işlemlerini yapabilen gelişmiş bir hesap makinesi.",
+            "kod": "import math\n\ndef sayi():\n return float(input(\"İlk Sayıyı Giriniz:\"))\n\ndef sayi2():\n return float(input(\"İkinci Sayıyı Giriniz:\"))\n\nwhile True:\n\n secim = input(\"1.Toplama İşlemi\\n2.Çıkarma İşlemi\\n3.Çarpma İşlemi\\n4.Bölme İşlemi\\n5.Üs Alma\\n6.Faktöriyel Alma\\n7.Karekök Alma\\n8.Kapat\\nLütfen Yapmak İstediğiniz İşlemin Numarasını Giriniz:\")\n\n if secim == \"1\":\n t1 = sayi()\n t2 = sayi2()\n print(t1 + t2)\n if secim == \"2\":\n ç1 = sayi()\n ç2 = sayi2()\n print(ç1 - ç2)\n if secim == \"3\":\n ça1 = sayi()\n ça2 = sayi2()\n print(ça1 * ça2)\n if secim == \"4\":\n b1 = sayi()\n b2 = sayi2()\n print(b1 / b2)\n if secim == \"5\":\n ü1 = sayi()\n ü2 = sayi2()\n print(ü1 ** ü2)\n if secim == \"6\":\n f = int(input(\"Faktöriyel almak istediğiniz sayıyı giriniz:\"))\n f = math.factorial(f)\n print(f)\n if secim == \"7\":\n k = float(input(\"Karekökünü Almak İstediğiniz Sayıyı Giriniz:\"))\n k = math.sqrt(k)\n print(k)\n if secim == \"8\":\n print(\"Program Kapatılıyor...\")\n break"
+        }, {
+            "id": "python-turtle-kalp",
+            "baslik": "Python Trurtle ile Kalp Çizimi",
+            "dil": "Python",
+            "tip": "goster",
+            "demo": true,
+            "aciklama": "Python turtle kütüphanesi ile kırmızı renkte bir kalp şekli çizen bir örnek.",
+            "kod": "from turtle import *\ncolor('red')\nbegin_fill()\npensize(3)\nleft(50)\nforward(133)\ncircle(50, 200)\nright(140)\ncircle(50, 200)\nend_fill()\ndone()"
+        }]
+    };
+
 
     // === SAYFA GEÇİŞLERİ VE NAVİGASYON LOGİĞİ ===
     navLinkElements.forEach(link => {
@@ -34,12 +191,12 @@ Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
                         hitabeContainer.scrollTop = 0;
                     }
                 }
-                return; 
+                return;
             }
 
             sayfalar.forEach(s => s.classList.remove('aktif'));
             document.getElementById(targetId).classList.add('aktif');
-            
+
             modals.forEach(modal => {
                 if (modal) modal.style.display = "none";
             });
@@ -75,118 +232,64 @@ Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
     if (ataturkGif && hitabeContainer) {
         ataturkGif.addEventListener('click', () => {
             hitabeContainer.classList.toggle('hitabe-visible');
-            if (hitabeContainer.classList.contains('hitabe-visible')) hitabeContainer.scrollTop = 0;
+            if (hitabeContainer.classList.contains('hitabe-visible')) {
+                hitabeContainer.scrollTop = 0;
+            }
         });
     }
 
     document.body.addEventListener('click', function(event) {
         if (event.target.matches('.btn-goster')) {
-            const wrapper = event.target.closest('.kod-blogu-wrapper');
-            const kodBlok = wrapper.querySelector('.kod-blogu');
-            kodBlok.classList.toggle('acik');
-            event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
+            // Hem kod kartları hem de proje modalı içindeki kod blokları için çalışır
+            const wrapper = event.target.closest('.kod-blogu-wrapper') || event.target.closest('.modal-codes > div');
+            if (wrapper) {
+                const kodBlok = wrapper.querySelector('.kod-blogu');
+                if (kodBlok) {
+                    kodBlok.classList.toggle('acik');
+                    event.target.textContent = kodBlok.classList.contains('acik') ? 'Kodu Gizle' : 'Kodu Göster';
+                }
+            }
         }
-
         if (event.target.matches('.btn-kopyala')) {
             const wrapper = event.target.closest('.kod-blogu');
-            const kod = wrapper.querySelector('code').innerText;
-            navigator.clipboard.writeText(kod).then(() => {
-                event.target.classList.add('kopyalandi');
-                setTimeout(() => event.target.classList.remove('kopyalandi'), 1500);
-            });
+            if (wrapper) {
+                const kod = wrapper.querySelector('code').innerText;
+                navigator.clipboard.writeText(kod).then(() => {
+                    event.target.classList.add('kopyalandi');
+                    setTimeout(() => event.target.classList.remove('kopyalandi'), 1500);
+                });
+            }
         }
-
         if (event.target.matches('.btn-demo')) {
             const kodId = event.target.dataset.id;
             const kodData = tumVeri.kodlar.find(k => k.id === kodId);
-            if(kodData) demoyuBaslat(kodData);
+            if (kodData) demoyuBaslat(kodData);
         }
     });
 
-    let tumVeri = {};
-    async function verileriYukle() {
-        try {
-            const response = await fetch('data.json');
-            tumVeri = await response.json();
+    function verileriYukle() {
+        // TumVeri artık doğrudan JS dosyasına dahil edildiği için fetch'e gerek yok.
+        // Sadece mevcut veriyi kullanarak arayüzü oluşturuyoruz.
 
-            const projelerListesi = document.getElementById('projeler-listesi');
-            projelerListesi.innerHTML = '';
-            tumVeri.projeler.forEach(proje => {
-                const projeElementi = document.createElement('div');
-                projeElementi.className = 'proje-karti';
-                projeElementi.dataset.id = proje.id;
-                const kapakResmi = proje.resimler?.[0] || 'images/default.png';
-                projeElementi.innerHTML = `<img src="${kapakResmi}" alt="${proje.baslik}"><div class="proje-karti-icerik"><h3>${proje.baslik}</h3><p>${proje.aciklama}</p></div>`;
-                projeElementi.addEventListener('click', () => detaylariGoster(proje));
-                projelerListesi.appendChild(projeElementi);
-            });
-
-            const kodlarListesi = document.getElementById('kodlar-listesi');
-            kodlarListesi.innerHTML = '';
-            tumVeri.kodlar.forEach(kod => {
-                const element = document.createElement('div');
-                if (kod.tip === 'indir') {
-                    element.className = 'indir-karti';
-                    element.innerHTML = `<h3>${kod.baslik}</h3><p>${kod.aciklama}</p><a href="${kod.dosyaYolu}" class="btn" download>İndir</a>`;
-                } else {
-                    element.className = 'kod-karti';
-                    const guvenliKod = kod.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    let demoButton = kod.demo ? `<button class="btn btn-demo" data-id="${kod.id}">⚡ Demoyu Dene</button>` : '';
-                    element.innerHTML = `
-                        <h3>${kod.baslik}</h3>
-                        <p>${kod.aciklama}</p>
-                        <div class="kod-blogu-wrapper">
-                            <div class="kod-actions">
-                                <button class="btn btn-goster">Kodu Göster</button>
-                                ${demoButton}
-                            </div>
-                            <div class="kod-blogu">
-                                <button class="btn btn-kopyala">📋</button>
-                                <pre><code>${guvenliKod}</code></pre>
-                            </div>
-                        </div>
-                    `;
-                }
-                kodlarListesi.appendChild(element);
-            });
-
-        } catch (error) { console.error('Veri Yüklenemedi:', error); }
-    }
-
-    function detaylariGoster(proje) {
-        document.getElementById('modal-title').textContent = proje.baslik;
-
-        const imagesContainer = document.getElementById('modal-images');
-        imagesContainer.innerHTML = '';
-        proje.resimler.forEach(resimUrl => {
-            imagesContainer.innerHTML += `<img src="${resimUrl}" alt="${proje.baslik} resmi">`;
+        const projelerListesi = document.getElementById('projeler-listesi');
+        projelerListesi.innerHTML = '';
+        tumVeri.projeler.forEach(proje => {
+            const projeElementi = document.createElement('div');
+            projeElementi.className = 'proje-karti';
+            projeElementi.dataset.id = proje.id;
+            const kapakResmi = proje.resimler?.[0] || 'images/default.png';
+            projeElementi.innerHTML = `<img src="${kapakResmi}" alt="${proje.baslik}"><div class="proje-karti-icerik"><h3>${proje.baslik}</h3><p>${proje.aciklama}</p></div>`;
+            projeElementi.addEventListener('click', () => detaylariGoster(proje));
+            projelerListesi.appendChild(projeElementi);
         });
 
-        const materialsContainer = document.getElementById('modal-materials');
-        materialsContainer.innerHTML = '';
-        proje.malzemeler.forEach(malzeme => {
-            materialsContainer.innerHTML += `<li>${malzeme}</li>`;
-        });
-
-        const codesContainer = document.getElementById('modal-codes');
-        codesContainer.innerHTML = '';
-        proje.kodBloklari.forEach(blok => {
-            const guvenliKod = blok.kod.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            codesContainer.innerHTML += `
-            <div class="kod-blogu-wrapper">
-                <h4>${blok.dil}</h4>
-                <div class="kod-actions">
-                    <button class="btn btn-goster">Kodu Göster</button>
-                </div>
-                <div class="kod-blogu">
-                    <button class="btn btn-kopyala">📋</button>
-                    <pre><code>${guvenliKod}</code></pre>
-                </div>
-            </div>
-            `;
-        });
-
-        projeModal.style.display = 'block';
-    }
-
-});
+        const kodlarListesi = document.getElementById('kodlar-listesi');
+        kodlarListesi.innerHTML = '';
+        tumVeri.kodlar.forEach(kod => {
+            const element = document.createElement('div');
+            if (kod.tip === 'indir') {
+                element.className = 'indir-karti';
+                element.innerHTML = `<h3>${kod.baslik}</h3><p>${kod.aciklama}</p><a href="${kod.dosyaYolu}" class="btn" download>İndir</a>`;
+            } else {
+                element.className = 'kod-karti';
+                const guvenliKod = kod.kod.replace(/</g, "&lt;").replace(/>/g
