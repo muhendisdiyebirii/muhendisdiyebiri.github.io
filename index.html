@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
+<html lang="tr" class=" zucfmhvqe idc0_350"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>muhendisdiyebirii</title>
@@ -9,8 +7,8 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&amp;family=Share+Tech+Mono&amp;display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -52,24 +50,362 @@
         </section>
         <section id="projeler" class="sayfa">
             <h1>PROJELER</h1>
-            <div id="projeler-listesi" class="grid-container"></div>
+            <div id="projeler-listesi" class="grid-container"><div class="proje-karti" data-id="arduino-radar"><img src="images/Ardunio-Radar-Sistemi.png" alt="Arduino UNO ile Radar Sistemi"><div class="proje-karti-icerik"><h3>Arduino UNO ile Radar Sistemi</h3><p>Bu kod, evde basit bir şekilde radar sistemi yapabilmemizi ve prensiplerini öğrenebilmemizi sağlar. Sensörün değeri 20'nin altına düşerse radar sistemi durur ve bilgisayar ekranında engel algılandı uyarısı gösterilir.</p></div></div><div class="proje-karti" data-id="deneyap-hava-durumu"><img src="images/Deneyapkart-havadurumu.png" alt="DeneyapKart İle Hava Durumu"><div class="proje-karti-icerik"><h3>DeneyapKart İle Hava Durumu</h3><p>Bu proje istediğimiz şehrin anlık hava durumunu internet olduğu sürece öğrenmemizi sağlar.</p></div></div><div class="proje-karti" data-id="deneyap-led-kontrol"><img src="images/dnyp-bluetooth-ledkontrol2.png" alt="DeneyapKart ile Bluetooth LED Kontrolü"><div class="proje-karti-icerik"><h3>DeneyapKart ile Bluetooth LED Kontrolü</h3><p>Telefonunuz ile Bluetooth üzerinden DeneyapKart'a bağlı bir LED'i kontrol edin.</p></div></div><div class="proje-karti" data-id="arduino-nano-gece-lambasi"><img src="images/ardunio-nano-gecelambası2.png" alt="Arduino Nano İle Gece Lambası"><div class="proje-karti-icerik"><h3>Arduino Nano İle Gece Lambası</h3><p>Ortam ışığına duyarlı, hava karardığında otomatik yanan LDR'li gece lambası yapımı.</p></div></div></div>
         </section>
         <section id="kodlar" class="sayfa">
             <h1>KOD ARŞİVİ</h1>
-            <div id="kodlar-listesi"></div>
+            <div id="kodlar-listesi"><div class="kod-karti">
+                        <h3>Sayı Tahmin Oyunu</h3>
+                        <p>Bilgisayarın 1-100 arasında tuttuğu sayıyı tahmin etmeye çalıştığınız bir oyun.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-sayi-tahmin">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import random
+
+def tahmin():
+  sayi = random.randint(1, 100)
+  while True:
+    a = int(input("Bir sayı seçiniz:"))
+    if sayi == a:
+      print("Tahmininiz doğru!")
+      break
+    if sayi &gt;= a:
+      print("Daha Büyük bir sayı giriniz:")
+    if sayi &lt;= a:
+      print("Daha Küçük bir sayı giriniz:")
+
+tahmin()</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Taş-Kağıt-Makas Oyunu</h3>
+                        <p>Bilgisayara karşı oynayabileceğiniz basit bir Taş-Kağıt-Makas oyunu.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-tkm">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import random
+
+def secim():
+    secenekler = ["Taş", "Kağıt", "Makas"]
+    bilgisayar_secimi = random.choice(secenekler)
+    oyuncu_secimi = input("Hadi bakalım! Taş mı, Kağıt mı, yoksa Makas mı? Seçimini yap: ").capitalize()
+
+    if oyuncu_secimi not in secenekler:
+        print("Öyle bir seçenek yok! Lütfen sadece 'Taş', 'Kağıt' veya 'Makas' yaz.")
+        return
+
+    print(f"Bilgisayarın tercihi: {bilgisayar_secimi}")
+    print(f"Senin tercihin: {oyuncu_secimi}")
+
+    if bilgisayar_secimi == oyuncu_secimi:
+        print("Berabere! Bu seferlik kimse kazanmadı.")
+    elif (bilgisayar_secimi == "Taş" and oyuncu_secimi == "Makas") or \
+         (bilgisayar_secimi == "Kağıt" and oyuncu_secimi == "Taş") or \
+         (bilgisayar_secimi == "Makas" and oyuncu_secimi == "Kağıt"):
+        print("Kaybettin! Daha iyisini yapabilirsin.")
+    else:
+        print("Tebrikler! Kazandın. Helal olsun!")
+
+while True:
+    secim()
+    devam = input("Devam etmek istiyor musun? (E/h): ").lower()
+    if devam != "e":
+        print("Oyun bitti! Yine bekleriz.")
+        break</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Rastgele Şifre Oluşturucu</h3>
+                        <p>Belirttiğiniz uzunlukta güçlü ve rastgele şifreler oluşturan bir script.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-sifre-olusturucu">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import random
+import string
+
+# Kullanıcıdan şifre uzunluğunu alma
+uzunluk = int(input("Şifrenizin Olmasını İstediğiniz Uzunluğu Giriniz:"))
+
+def sifre():
+    # Şifre elemanlarını belirle: büyük/küçük harf, rakam ve özel karakterler
+    eleman = string.ascii_letters + string.digits + "!#+%&amp;_"
+    # Random olarak şifre oluştur
+    şifre = ''.join(random.choice(eleman) for i in range(uzunluk))
+    # Oluşturulan şifreyi ekrana yazdır
+    print("Şifreniz: " + şifre)
+
+# Fonksiyonu çağır
+sifre()</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Sınırsız Mesaj Atma Botu</h3>
+                        <p>PyAutoGUI kütüphanesi ile aktif pencereye sürekli olarak belirlediğiniz mesajı gönderir. (Güvenlik nedeniyle demosu yoktur!)</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import pyautogui
+import time
+
+def mesaj():
+    pyautogui.write("Kanka")
+    pyautogui.press('enter')
+
+while True:
+    mesaj()</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="indir-karti"><h3>Animasyonlu Çiçek Projesi</h3><p>CSS animasyonları kullanılarak yapılmış, açılıp kapanan güzel bir çiçek efekti.</p><a href="downloads/animasyonlu-çiçek.html" class="btn" download="">İndir</a></div><div class="indir-karti"><h3>Kıza Açılma Projesi</h3><p>İnteraktif ve eğlenceli bir şekilde hazırlanmış bir web sayfası projesi.</p><a href="downloads/kıza-açılma.html" class="btn" download="">İndir</a></div><div class="kod-karti">
+                        <h3>Dosya Uzantısı Değiştirici</h3>
+                        <p>Kullanıcının belirttiği dosyanın uzantısını kolayca değiştiren bir script.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import os
+
+dosya = input("Dosyanın tam adını giriniz(örnek.txt):") #----&gt; Dosya Yolumuz
+
+uzantı = input("Dosyanın olmasını istediğiniz uzantısını giriniz(.txt,.vbs vs.):")
+
+yenidosya = os.path.splitext(dosya)[0] + (uzantı)
+
+os.rename(dosya, yenidosya)
+
+print(f"{dosya} -&gt; {yenidosya} olarak değiştirildi.")</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Karanlık Mod Geçişi</h3>
+                        <p>Kullanıcı checkbox işaretlediğinde sitenin temasını aydınlık ve karanlık mod arasında geçiş yapan basit bir örnek.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="html-karanlik-mod">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="tr"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;style&gt;
+  body {
+    font-family: Arial, sans-serif;
+    transition: background 0.5s, color 0.5s;
+    background: #f0f0f0;
+    color: #333;
+    text-align: center;
+    padding-top: 50px;
+  }
+  body.dark {
+    background: #222;
+    color: white;
+  }
+  label {
+    cursor: pointer;
+    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #4cafef;
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+  }
+  input[type="checkbox"]:hover {
+    transform: scale(1.4);
+  }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;label&gt;
+    &lt;input type="checkbox" id="themeCheckbox"&gt;
+    Karanlık Mod
+  &lt;/label&gt;
+&lt;script&gt;
+  const checkbox = document.getElementById("themeCheckbox");
+  checkbox.addEventListener("change", () =&gt; {
+    document.body.classList.toggle("dark", checkbox.checked);
+  });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Şifreli Liste Yöneticisi</h3>
+                        <p>Kullanıcının belirlediği şifre ile listeye eleman ekleme, çıkarma ve görüntüleme işlemleri yapılabilen basit bir yönetim sistemi.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-sifreli-liste-yoneticisi">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>sifre = int(input("Bir Şifre Belirleyiniz:"))
+
+def islem():
+    print("İşlem Başarılı!")
+
+def sifre_kontrol():
+    giris = int(input("Şifreyi Giriniz: "))
+    if giris == sifre:
+        return True
+    else:
+        print("Hatalı Şifre!")
+        return False
+
+liste = []  
+
+while True:
+    secim = input("1.Listeye Ekle\n2.Listeden Çıkar\n3.Listeyi Göster\n4.Kapat\nSeçiminizi Yapınız:")
+
+    if secim == "1":
+        if sifre_kontrol():  
+            ekle = input("Eklemek İstediğin Aktiviteyi Giriniz: ")
+            liste.append(ekle)
+            print(ekle + " eklendi")
+            islem()
+
+    elif secim == "2":
+        if sifre_kontrol():
+            print(liste)
+            cikar = input("Listeden Çıkartmak İstediğiniz Aktiviteyi Giriniz: ")
+            if cikar in liste:
+                liste.remove(cikar)
+                islem()
+            else:
+                print("Bu aktivite listede yok!")
+
+    elif secim == "3":
+        if sifre_kontrol():
+            print(liste)
+
+    elif secim == "4":
+        print("Program Kapatılıyor...")
+        break</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Hesap Makinesi</h3>
+                        <p>Toplama, çıkarma, çarpma, bölme, üs alma, faktöriyel ve karekök işlemlerini yapabilen gelişmiş bir hesap makinesi.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-gelistirilmis-hesap-makinesi">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>import math
+
+def sayi():
+    return float(input("İlk Sayıyı Giriniz:"))
+
+def sayi2():
+    return float(input("İkinci Sayıyı Giriniz:"))
+
+while True:
+
+    secim = input("1.Toplama İşlemi\n2.Çıkarma İşlemi\n3.Çarpma İşlemi\n4.Bölme İşlemi\n5.Üs Alma\n6.Faktöriyel Alma\n7.Karekök Alma\n8.Kapat\nLütfen Yapmak İstediğiniz İşlemin Numarasını Giriniz:")
+
+    if secim == "1":
+        t1 = sayi()
+        t2 = sayi2()
+        print(t1 + t2)
+    if secim == "2":
+        ç1 = sayi()
+        ç2 = sayi2()
+        print(ç1 - ç2)
+    if secim == "3":
+        ça1 = sayi()
+        ça2 = sayi2()
+        print(ça1 * ça2)
+    if secim == "4":
+        b1 = sayi()
+        b2 = sayi2()
+        print(b1 / b2)
+    if secim == "5":
+        ü1 = sayi()
+        ü2 = sayi2()
+        print(ü1 ** ü2)
+    if secim == "6":
+        f = int(input("Faktöriyel almak istediğiniz sayıyı giriniz:"))
+        f = math.factorial(f)
+        print(f)
+    if secim == "7":
+        k = float(input("Karekökünü Almak İstediğiniz Sayıyı Giriniz:"))
+        k = math.sqrt(k)
+        print(k)
+    if secim == "8":
+        print("Program Kapatılıyor...")
+        break</code></pre>
+                            </div>
+                        </div>
+                    </div><div class="kod-karti">
+                        <h3>Python Trurtle ile Kalp Çizimi</h3>
+                        <p>Python turtle kütüphanesi ile kırmızı renkte bir kalp şekli çizen bir örnek.</p>
+                        <div class="kod-blogu-wrapper">
+                            <div class="kod-actions">
+                                <button class="btn btn-goster">Kodu Göster</button>
+                                <button class="btn btn-demo" data-id="python-turtle-kalp">⚡ Demoyu Dene</button>
+                            </div>
+                            <div class="kod-blogu">
+                                <button class="btn btn-kopyala">📋</button>
+                                <pre><code>from turtle import *
+color('red')
+begin_fill()
+pensize(3)
+left(50)
+forward(133)
+circle(50, 200)
+right(140)
+circle(50, 200)
+end_fill()
+done()</code></pre>
+                            </div>
+                        </div>
+                    </div></div>
         </section>
     </main>
 
     <div class="ataturk-gif-container">
         <img src="ataturk_bayrak.gif" alt="Atatürk ve Türk Bayrağı" id="ataturkGif">
         <div id="hitabeContainer" class="hitabe-hidden">
-            <pre id="gencligeHitabe"></pre>
+            <pre id="gencligeHitabe">Ey Türk Gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.
+
+Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dâhilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve Cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şerâitini düşünmeyeceksin! Bu imkân ve şerâit, çok nâmüsait bir mahiyette tezahür edebilir. İstiklâl ve Cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şerâitten daha elim ve daha vahim olmak üzere, memleketin dâhilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr ü zaruret içinde harap ve bîtap düşmüş olabilir.
+
+Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerâit içinde dahi vazifen, Türk İstiklâl ve Cumhuriyetini kurtarmaktır! Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur!
+</pre>
         </div>
     </div>
  
-    <div id="proje-modal" class="modal">
+    <div id="proje-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button">×</span>
             <h2 id="modal-title"></h2>
             <div id="modal-images"></div>
             <h3>GEREKLİ MALZEMELER</h3>
@@ -79,17 +415,32 @@
         </div>
     </div>
 
-    <div id="demo-modal" class="modal">
+    <div id="demo-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2 id="demo-modal-title"></h2>
+            <span class="close-button">×</span>
+            <h2 id="demo-modal-title">Sayı Tahmin Oyunu</h2>
             <p class="demo-disclaimer">
                 <strong>Bilgilendirme:</strong> Bu demo, orijinal Python kodunun mantığını ve çalışmasını tarayıcınızda deneyimleyebilmeniz için <strong>JavaScript ile yeniden oluşturulmuştur.</strong>
             </p>
-            <div id="demo-modal-content"></div>
+            <div id="demo-modal-content"><pre><code>import random
+
+def tahmin():
+  sayi = random.randint(1, 100)
+  while True:
+    a = int(input("Bir sayı seçiniz:"))
+    if sayi == a:
+      print("Tahmininiz doğru!")
+      break
+    if sayi &gt;= a:
+      print("Daha Büyük bir sayı giriniz:")
+    if sayi &lt;= a:
+      print("Daha Küçük bir sayı giriniz:")
+
+tahmin()</code></pre></div>
         </div>
     </div>
 
     <script src="script.js"></script>
-</body>
-</html>
+
+
+</body></html>
